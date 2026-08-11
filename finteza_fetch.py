@@ -29,7 +29,8 @@ BASE_URL   = "https://panel.finteza.com/api/statistics"
 OUTPUT_DIR   = os.path.dirname(os.path.abspath(__file__))
 MEMORY_FILE  = os.path.join(OUTPUT_DIR, "finteza_memory.json")
 
-# Session cookies (from browser; LLT valid until 2027)
+# Session cookies — локально хардкод, в CI берётся из env FINTEZA_COOKIE
+_COOKIE_ENV = os.environ.get("FINTEZA_COOKIE", "")
 COOKIES = {
     "_fz_uniq": "6387735736774797247",
     "_fz_fvdt": "1781282239",
@@ -64,6 +65,8 @@ def fz_ts(unix_ts: int) -> int:
 
 
 def _cookie_str() -> str:
+    if _COOKIE_ENV:
+        return _COOKIE_ENV
     return "; ".join(f"{k}={v}" for k, v in COOKIES.items())
 
 
@@ -1183,12 +1186,22 @@ def write_html(results: dict, out_dir: str, today=None):
         for b in cr_brands_y[:9]
     )
 
+    _SUPPR_LABELS = {
+        "session_cap":   ("лимит сессии", "6ч окно показа", "#e24b4a"),
+        "min_gap":       ("cooldown",      "~5ч между показами", "#e24b4a"),
+        "weekly_cap":    ("недельный лим", "", "#e24b4a"),
+        "no_providers":  ("нет провайдеров", "⚠ техн. баг", "#eb6834"),
+        "converted":     ("уже перешёл",   "21д блок", "#1baf7a"),
+        "quick_dismiss": ("быстро закрыл", "3д блок", "#888780"),
+    }
     suppr_rows = "".join(
         f'<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">'
-        f'<span style="width:82px;font-size:11px;white-space:nowrap;flex-shrink:0;">{s[0]}</span>'
+        f'<span style="width:90px;font-size:11px;white-space:nowrap;flex-shrink:0;" '
+        f'title="{_SUPPR_LABELS.get(s[0], (s[0],"",""))[1]}">'
+        f'{_SUPPR_LABELS.get(s[0], (s[0],"","#e24b4a"))[0]}</span>'
         f'<div style="flex:1;background:#f0efe8;border-radius:3px;height:6px;">'
         f'<div style="width:{round(s[1]/suppr_y[0][1]*100) if suppr_y else 0}%;'
-        f'height:100%;background:#e24b4a;border-radius:3px;"></div></div>'
+        f'height:100%;background:{_SUPPR_LABELS.get(s[0], ("","","#e24b4a"))[2]};border-radius:3px;"></div></div>'
         f'<span style="font-size:11px;font-weight:600;width:36px;text-align:right;">{s[1]:,}</span>'
         f'<span style="font-size:10px;color:#898781;width:30px;text-align:right;">'
         f'{round(s[1]/s_total_y*100) if s_total_y else 0}%</span></div>'
@@ -1593,7 +1606,9 @@ new Chart(document.getElementById('c5'),{{type:'doughnut',data:{{
 </body>
 </html>"""
 
-    out = os.path.join(out_dir, "dashboard.html")
+    public_dir = os.path.join(out_dir, "public")
+    os.makedirs(public_dir, exist_ok=True)
+    out = os.path.join(public_dir, "index.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"✓ Dashboard  → {out}")
