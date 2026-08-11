@@ -1255,6 +1255,7 @@ h1{{font-size:16px;font-weight:600;}}
 @media(max-width:900px){{.g6{{grid-template-columns:repeat(3,1fr);}}}}
 @media(max-width:640px){{.g6{{grid-template-columns:1fr 1fr;}}}}
 @media(max-width:640px){{.g3{{grid-template-columns:1fr 1fr;}}.g2{{grid-template-columns:1fr;}}}}
+@media(max-width:480px){{.g2,.g3,.g4{{grid-template-columns:1fr;}}}}
 </style>
 </head>
 <body>
