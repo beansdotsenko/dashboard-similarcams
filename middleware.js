@@ -1,5 +1,3 @@
-import { next } from '@vercel/edge'
-
 export const config = {
   matcher: '/:path*',
 }
@@ -9,7 +7,7 @@ export default function middleware(request) {
   const expectedAuth = 'Basic ' + btoa('camsboard:Nx7$kQpR2w')
 
   if (authHeader === expectedAuth) {
-    return next()
+    return
   }
 
   return new Response('Unauthorized', {
