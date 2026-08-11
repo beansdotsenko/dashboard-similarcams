@@ -1,0 +1,5 @@
+finteza_data.json
+finteza_memory.json
+__pycache__/
+*.pyc
+.env
