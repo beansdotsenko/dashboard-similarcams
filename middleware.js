@@ -1,3 +1,5 @@
+import { NextResponse } from 'next/server'
+
 export const config = {
   matcher: '/:path*',
 }
@@ -7,7 +9,7 @@ export default function middleware(request) {
   const expectedAuth = 'Basic ' + btoa('camsboard:Nx7$kQpR2w')
 
   if (authHeader === expectedAuth) {
-    return
+    return NextResponse.next()
   }
 
   return new Response('Unauthorized', {
