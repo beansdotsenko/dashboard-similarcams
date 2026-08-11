@@ -1325,21 +1325,43 @@ h1{{font-size:16px;font-weight:600;}}
     <div class="num-sm">{reco_shown_y:,}</div>
     <div class="delta" style="color:{d_reco_col};">{d_reco_lbl}</div>
     <div class="sub">dismissed: {reco_dism_y} ({reco_dism_rate}%) · all clicked: {reco_all_y} ({reco_all_rate}%)</div>
-    <div style="margin-top:8px;border-top:1px solid #eeeee8;padding-top:7px;display:flex;gap:16px;">
-      <div style="font-size:10px;color:#52514e;line-height:1.7;">
-        <span style="color:#898781;font-weight:600;">online</span><br>
-        shown <b>{reco_shown_online_y:,}</b><br>
-        dism <b>{reco_dism_online_y:,}</b> · suppr <b>{reco_suppr_online_y:,}</b><br>
-        🌐 provider <b>{reco_provcl_online_y}</b> <span style="color:#1baf7a;">({cr_prov_online}%)</span><br>
-        👤 модель <b>{reco_modelcl_online_y}</b> <span style="color:#1baf7a;">({cr_model_online}%)</span><br>
-</div>
-      <div style="font-size:10px;color:#52514e;line-height:1.7;">
-        <span style="color:#898781;font-weight:600;">offline</span><br>
-        shown <b>{reco_shown_offline_y:,}</b><br>
-        dism <b>{reco_dism_offline_y:,}</b> · suppr <b>{reco_suppr_offline_y:,}</b><br>
-        🌐 provider <b>{reco_provcl_offline_y}</b> <span style="color:#1baf7a;">({cr_prov_offline}%)</span><br>
-        👤 модель <b>{reco_modelcl_offline_y}</b> <span style="color:#1baf7a;">({cr_model_offline}%)</span><br>
-      </div>
+    <div style="margin-top:8px;border-top:1px solid #eeeee8;padding-top:7px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:0 6px 4px 0;color:#898781;font-size:10px;font-weight:600;width:40%;"></th>
+            <th style="text-align:right;padding:0 6px 4px;color:#1baf7a;font-size:10px;font-weight:600;">online</th>
+            <th style="text-align:right;padding:0 0 4px 6px;color:#898781;font-size:10px;font-weight:600;">offline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top:.5px solid #eeeee8;">
+            <td style="padding:4px 6px 4px 0;color:#898781;">shown</td>
+            <td style="padding:4px 6px;text-align:right;font-weight:600;">{reco_shown_online_y:,}</td>
+            <td style="padding:4px 0 4px 6px;text-align:right;font-weight:600;">{reco_shown_offline_y:,}</td>
+          </tr>
+          <tr style="border-top:.5px solid #eeeee8;">
+            <td style="padding:4px 6px 4px 0;color:#898781;">dism</td>
+            <td style="padding:4px 6px;text-align:right;">{reco_dism_online_y:,}</td>
+            <td style="padding:4px 0 4px 6px;text-align:right;">{reco_dism_offline_y:,}</td>
+          </tr>
+          <tr style="border-top:.5px solid #eeeee8;">
+            <td style="padding:4px 6px 4px 0;color:#898781;">suppr</td>
+            <td style="padding:4px 6px;text-align:right;">{reco_suppr_online_y:,}</td>
+            <td style="padding:4px 0 4px 6px;text-align:right;">{reco_suppr_offline_y:,}</td>
+          </tr>
+          <tr style="border-top:.5px solid #eeeee8;">
+            <td style="padding:4px 6px 4px 0;color:#898781;">🌐 provider</td>
+            <td style="padding:4px 6px;text-align:right;"><b>{reco_provcl_online_y}</b> <span style="color:#1baf7a;font-size:10px;">({cr_prov_online}%)</span></td>
+            <td style="padding:4px 0 4px 6px;text-align:right;"><b>{reco_provcl_offline_y}</b> <span style="color:#1baf7a;font-size:10px;">({cr_prov_offline}%)</span></td>
+          </tr>
+          <tr style="border-top:.5px solid #eeeee8;">
+            <td style="padding:4px 6px 4px 0;color:#898781;">👤 модель</td>
+            <td style="padding:4px 6px;text-align:right;"><b>{reco_modelcl_online_y}</b> <span style="color:#1baf7a;font-size:10px;">({cr_model_online}%)</span></td>
+            <td style="padding:4px 0 4px 6px;text-align:right;"><b>{reco_modelcl_offline_y}</b> <span style="color:#1baf7a;font-size:10px;">({cr_model_offline}%)</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
