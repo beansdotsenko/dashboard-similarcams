@@ -37,7 +37,7 @@ h1{font-size:16px;font-weight:600;}
 <body>
 <div class="hdr">
   <h1>similarcams.com</h1>
-  <span class="meta">обновлено: 11.08.2026 21:32 UTC</span>
+  <span class="meta">обновлено: 11.08.2026 21:37 UTC</span>
 </div>
 
 <!-- ══ ВЧЕРА ══════════════════════════════════════════════════════════ -->
@@ -453,25 +453,5 @@ new Chart(document.getElementById('c5'),{type:'doughnut',data:{
   datasets:[{data:[2496, 746, 71],backgroundColor:['#2a78d6','#eb6834','#888780','#eda100'],borderWidth:2,borderColor:'#fff'}]
 },options:{...b,cutout:'60%',plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},color:tk,boxWidth:10,padding:6}},tooltip:{mode:'point',intersect:true}}}});
 </script>
-<script>
-(function(){
-  var PWD = 'Nx7$kQpR2w';
-  var KEY = 'cb_auth';
-  if(sessionStorage.getItem(KEY) === '1') return;
-  var overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:#f5f4ef;display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
-  overlay.innerHTML = '<div style="background:#fff;border-radius:14px;padding:32px 28px;width:300px;box-shadow:0 4px 24px rgba(0,0,0,.1);text-align:center;"><div style="font-size:18px;font-weight:600;color:#0b0b0b;margin-bottom:6px;">similarcams dashboard</div><div style="font-size:12px;color:#898781;margin-bottom:20px;">введите пароль</div><input id="auth-pwd" type="password" placeholder="Пароль" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d5d4cd;border-radius:8px;font-size:14px;margin-bottom:10px;"><div id="auth-err" style="font-size:11px;color:#e24b4a;min-height:16px;margin-bottom:8px;"></div><button onclick="window.__checkAuth()" style="width:100%;padding:10px;background:#0b0b0b;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;">Войти</button></div>';
-  document.body.appendChild(overlay);
-  window.__checkAuth = function(){
-    if(document.getElementById('auth-pwd').value === PWD){
-      sessionStorage.setItem(KEY,'1');
-      overlay.remove();
-    } else {
-      document.getElementById('auth-err').textContent = 'Неверный пароль';
-      document.getElementById('auth-pwd').value = '';
-    }
-  };
-  document.addEventListener('keydown', function(e){ if(e.key==='Enter') window.__checkAuth(); });
-})();
-</script></body>
+</body>
 </html>
