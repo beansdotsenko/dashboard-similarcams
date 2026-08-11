@@ -5,6 +5,9 @@ on:
     - cron: '0 7 * * *'  # 07:00 UTC = 10:00 Moscow каждый день
   workflow_dispatch:       # ручной запуск через кнопку в GitHub
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
