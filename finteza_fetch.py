@@ -1256,9 +1256,36 @@ h1{{font-size:16px;font-weight:600;}}
 @media(max-width:640px){{.g6{{grid-template-columns:1fr 1fr;}}}}
 @media(max-width:640px){{.g3{{grid-template-columns:1fr 1fr;}}.g2{{grid-template-columns:1fr;}}}}
 @media(max-width:480px){{.g2,.g3,.g4{{grid-template-columns:1fr;}}}}
-@media(max-width:480px){{.g2,.g3,.g4{{grid-template-columns:1fr;}}}}
-@media(max-width:480px){{.g2,.g3,.g4{{grid-template-columns:1fr;}}}}
 </style>
+<script>
+(function(){{
+  var PWD = 'Nx7$kQpR2w';
+  var KEY = 'cb_auth';
+  if(sessionStorage.getItem(KEY) === '1') return;
+  var overlay = document.createElement('div');
+  overlay.id = 'auth-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:#f5f4ef;display:flex;align-items:center;justify-content:center;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
+  overlay.innerHTML = '<div style="background:#fff;border-radius:14px;padding:32px 28px;width:300px;box-shadow:0 4px 24px rgba(0,0,0,.1);text-align:center;">'
+    + '<div style="font-size:18px;font-weight:600;color:#0b0b0b;margin-bottom:6px;">similarcams dashboard</div>'
+    + '<div style="font-size:12px;color:#898781;margin-bottom:20px;">введите пароль</div>'
+    + '<input id="auth-pwd" type="password" placeholder="Пароль" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d5d4cd;border-radius:8px;font-size:14px;outline:none;margin-bottom:10px;">'
+    + '<div id="auth-err" style="font-size:11px;color:#e24b4a;min-height:16px;margin-bottom:8px;"></div>'
+    + '<button onclick="window.__checkAuth()" style="width:100%;padding:10px;background:#0b0b0b;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;">Войти</button>'
+    + '</div>';
+  document.addEventListener('DOMContentLoaded', function(){{ document.body.appendChild(overlay); }});
+  window.__checkAuth = function(){{
+    var val = document.getElementById('auth-pwd').value;
+    if(val === PWD){{
+      sessionStorage.setItem(KEY, '1');
+      document.getElementById('auth-overlay').remove();
+    }} else {{
+      document.getElementById('auth-err').textContent = 'Неверный пароль';
+      document.getElementById('auth-pwd').value = '';
+    }}
+  }};
+  document.addEventListener('keydown', function(e){{ if(e.key==='Enter') window.__checkAuth(); }});
+}})();
+</script>
 </head>
 <body>
 <div class="hdr">
