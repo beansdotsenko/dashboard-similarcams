@@ -701,7 +701,7 @@ def write_html(results: dict, out_dir: str, today=None):
 
     top20_models = sorted(
         (m for m in _model_agg.values() if m["vis"] > 0),
-        key=lambda x: -x["vis"]
+        key=lambda x: -(x["vis"] + x["profile_vis"] + x["stats_vis"])
     )[:20]
 
     # Предыдущий день из памяти для дельт и новых/выпавших (пропускаем текущий yest_iso)
@@ -1331,8 +1331,9 @@ def write_html(results: dict, out_dir: str, today=None):
         new_badge = '<span style="background:#1baf7a;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:4px;">new</span>' if is_new else ""
         plat_color = _PLAT_COLORS.get(m["platform"], "#898781")
         spark = _model_spark(m["gender"], m["platform"], m["model"])
-        prof_str = f'<span style="color:#898781;">{m["profile_vis"]:,}</span>' if m["profile_vis"] else "—"
-        stats_str = f'<span style="color:#898781;">{m["stats_vis"]:,}</span>' if m["stats_vis"] else "—"
+        _dash = '<span style="color:#c8c7c0;">—</span>'
+        prof_str = f'{m["profile_vis"]:,}' if m["profile_vis"] else _dash
+        stats_str = f'{m["stats_vis"]:,}' if m["stats_vis"] else _dash
         models_rows_html += (
             f'<tr style="border-bottom:.5px solid #eeeee8;vertical-align:middle;">'
             f'<td style="padding:5px 6px 5px 0;font-size:11px;color:#898781;text-align:right;">{i}</td>'
