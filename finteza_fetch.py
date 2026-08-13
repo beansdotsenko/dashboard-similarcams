@@ -34,9 +34,9 @@ _COOKIE_ENV = os.environ.get("FINTEZA_COOKIE", "")
 COOKIES = {
     "_fz_uniq": "6387735736774797247",
     "_fz_fvdt": "1781282239",
-    "LLT":      "qxvswoptpylzozzktoyjbzlzdmkulzx",
+    "LLT":      "vgrpqfndmixhlmazihjxiqakjtuppde",
     "lang":     "ru",
-    "_fz_ssn":  "1785858980431302718",
+    "_fz_ssn":  "1786621598523730527",
 }
 
 # ── ФИЛЬТРЫ — настрой под себя ──────────────────────────────────────────
@@ -52,6 +52,7 @@ EXCLUDE_PAGES = {
     "/test",
     "/admin",
     "/cdn-cgi",
+    "/mi-deterrence",   # дисклеймер 18+, высокий % новых и низкий PPS — норма
 }
 
 # Дни с трафиком > среднее × N считаются аномалией и выбрасываются из 30d графика
@@ -81,6 +82,32 @@ def load_memory() -> dict:
         except Exception:
             pass
     return {"entries": [], "pinned": []}
+
+
+def parse_model_url(path: str) -> dict | None:
+    """Parse model URLs → dict or None.
+    Supported:
+      /cams/{gender}/{platform}/{model}[/suffix]
+      /ru/cams/{gender}/{platform}/{model}[/suffix]
+      /shorts/{gender}/{model}
+    """
+    parts = [p for p in str(path).split("/") if p]
+    # /cams/gender/platform/model[/suffix]
+    if len(parts) >= 4 and parts[0] == "cams":
+        return {"gender": parts[1], "platform": parts[2], "model": parts[3],
+                "suffix": parts[4] if len(parts) > 4 else None,
+                "base": f"/cams/{parts[1]}/{parts[2]}/{parts[3]}"}
+    # /ru/cams/gender/platform/model[/suffix]
+    if len(parts) >= 5 and parts[0] == "ru" and parts[1] == "cams":
+        return {"gender": parts[2], "platform": parts[3], "model": parts[4],
+                "suffix": parts[5] if len(parts) > 5 else None,
+                "base": f"/cams/{parts[2]}/{parts[3]}/{parts[4]}"}
+    # /shorts/gender/model  (platform unknown)
+    if len(parts) >= 3 and parts[0] == "shorts":
+        return {"gender": parts[1], "platform": "shorts", "model": parts[2],
+                "suffix": "shorts",
+                "base": f"/shorts/{parts[1]}/{parts[2]}"}
+    return None
 
 
 def save_memory(mem: dict, date_str: str, metrics: dict,
@@ -234,7 +261,7 @@ def main():
         **base,
         "metrics":     metrics_vis,
         "group":       "referrer_path,referrer_domain",
-        "limit":       "22",
+        "limit":       "100",
         "order":       "total_users",
         "prev_period": "1",
         "get_other":   "1",
@@ -448,6 +475,11 @@ def write_html(results: dict, out_dir: str, today=None):
         print("⚠ Insufficient daily_30d data")
         return
 
+    mem = load_memory()
+    _today_ref_early = today if today else datetime.now(timezone.utc).replace(
+        hour=0, minute=0, second=0, microsecond=0)
+    yest_iso = (_today_ref_early - timedelta(days=1)).strftime("%Y-%m-%d")
+
     # Yesterday = last complete day = d30[-2]; day before = d30[-3]
     yest = d30[-2]
     prev = d30[-3]
@@ -636,6 +668,54 @@ def write_html(results: dict, out_dir: str, today=None):
 
     # Sort by visitors desc, take top 20
     top20 = sorted(py_cur.values(), key=lambda r: -int(r[3]))[:20]
+
+    # ── Модели: агрегация по (gender, platform, model) ───────────────────
+    _model_agg = {}   # /cams/ pages → {vis, profile_vis, stats_vis}
+    _shorts_agg = {}  # /shorts/ pages → {vis, gender, model}
+    for (path, domain), r in py_cur.items():
+        pm = parse_model_url(path)
+        if pm is None:
+            continue
+        vis = int(r[3])
+        if pm["suffix"] == "shorts":
+            # /shorts/gender/model → отдельная таблица
+            key = (pm["gender"], pm["model"])
+            if key not in _shorts_agg:
+                _shorts_agg[key] = {"gender": pm["gender"], "model": pm["model"], "vis": 0}
+            _shorts_agg[key]["vis"] += vis
+            continue
+        key = (pm["gender"], pm["platform"], pm["model"])
+        if key not in _model_agg:
+            _model_agg[key] = {"gender": pm["gender"], "platform": pm["platform"],
+                               "model": pm["model"], "base": pm["base"],
+                               "vis": 0, "profile_vis": 0, "stats_vis": 0}
+        suffix = pm["suffix"]
+        if suffix is None:
+            _model_agg[key]["vis"] += vis
+        elif suffix == "profile":
+            _model_agg[key]["profile_vis"] += vis
+        elif suffix in ("stats-and-schedule", "stats"):
+            _model_agg[key]["stats_vis"] += vis
+
+    top20_shorts = sorted(_shorts_agg.values(), key=lambda x: -x["vis"])[:20]
+
+    top20_models = sorted(
+        (m for m in _model_agg.values() if m["vis"] > 0),
+        key=lambda x: -x["vis"]
+    )[:20]
+
+    # Предыдущий день из памяти для дельт и новых/выпавших (пропускаем текущий yest_iso)
+    _prev_rankings = []
+    for _d in sorted(mem.get("model_rankings", {}).keys(), reverse=True):
+        if _d == yest_iso:
+            continue  # пропускаем текущий день (повторный запуск)
+        _prev_rankings = mem["model_rankings"][_d]
+        break
+    _prev_keys = {(m["gender"], m["platform"], m["model"]) for m in _prev_rankings}
+    _prev_vis   = {(m["gender"], m["platform"], m["model"]): m["vis"] for m in _prev_rankings}
+    _today_keys = {(m["gender"], m["platform"], m["model"]) for m in top20_models}
+    models_new     = [m for m in top20_models if (m["gender"], m["platform"], m["model"]) not in _prev_keys]
+    models_dropped = [m for m in _prev_rankings  if (m["gender"], m["platform"], m["model"]) not in _today_keys]
 
     def _page_comment(r, prev_r, site_new_pct, site_pps):
         """Generate a short comment for a page row."""
@@ -1006,11 +1086,25 @@ def write_html(results: dict, out_dir: str, today=None):
     findings_html = "".join(_card(*f) for f in findings) or "<p style='font-size:12px;color:#898781;'>Нет данных.</p>"
     hypos_html    = "".join(_card(*h) for h in hypos)    or "<p style='font-size:12px;color:#898781;'>Нет гипотез.</p>"
 
+    # ── Аномалии ────────────────────────────────────────────────────────
+    anomalies = []  # list of (icon, title, text, color)
+
+    # 1. Бот-трафик на страницах: PPS < 1.2 + 95%+ новых + > 30 посетителей
+    for (path, domain), r in py_cur.items():
+        vis_pg = int(r[3])
+        new_pg = int(r[4]) if len(r) > 4 else 0
+        pps_pg = float(r[7]) if len(r) > 7 else 0
+        new_pct_pg = new_pg / vis_pg if vis_pg else 0
+        if vis_pg >= 30 and pps_pg > 0 and pps_pg < 1.25 and new_pct_pg >= 0.95:
+            anomalies.append(("🤖", f"Бот-трафик: {path[:50]}",
+                               f"{vis_pg:,} посет., PPS={pps_pg:.2f}, {round(new_pct_pg*100)}% новых — признаки ботов",
+                               "#e24b4a"))
+
+    # 2. Резкое падение страницы — TODO: реализовать через накопленную историю в памяти
+    # (py_cur содержит неполный день, прямое сравнение некорректно)
+
     # ── Сохранение в память ──────────────────────────────────────────────
-    mem = load_memory()
-    _today_ref = today if today else datetime.now(timezone.utc).replace(
-        hour=0, minute=0, second=0, microsecond=0)
-    yest_iso = (_today_ref - timedelta(days=1)).strftime("%Y-%m-%d")
+    # yest_iso уже вычислен в начале функции
     save_memory(mem, yest_iso, {
         "visitors":    vis_y,
         "new_users":   new_y,
@@ -1030,6 +1124,58 @@ def write_html(results: dict, out_dir: str, today=None):
         "ctr_30d_avg": ctr_30d_avg,
         "peak_vis":    peak_vis,
     }, findings, hypos)
+
+    # ── Сохранение стран в память + детектор аномалий ───────────────────
+    _cntry_today = [(str(r[0]), int(r[1])) for r in _cntry]
+    _cntry_total_vis = vis_y or 1
+    mem.setdefault("country_daily", {})
+    mem["country_daily"][yest_iso] = [
+        {"country": c, "vis": v, "pct": round(v / _cntry_total_vis * 100, 1)}
+        for c, v in _cntry_today
+    ]
+    _cd_dates = sorted(mem["country_daily"].keys())[-30:]
+    mem["country_daily"] = {d: mem["country_daily"][d] for d in _cd_dates}
+
+    # Страновые аномалии: сравниваем с 7-дневным средним
+    if len(mem["country_daily"]) >= 3:
+        _hist_dates = sorted(mem["country_daily"].keys())[:-1][-7:]  # last 7 days excl today
+        _avg_pct = {}
+        for _d in _hist_dates:
+            for entry in mem["country_daily"][_d]:
+                _avg_pct.setdefault(entry["country"], []).append(entry["pct"])
+        _avg_pct = {c: sum(v)/len(v) for c, v in _avg_pct.items()}
+        for c, v in _cntry_today:
+            today_pct = round(v / _cntry_total_vis * 100, 1)
+            avg = _avg_pct.get(c, 0)
+            if today_pct >= 10 and (avg == 0 or today_pct / max(avg, 0.5) >= 2.5):
+                label = "новая страна" if avg == 0 else f"avg {avg:.1f}%"
+                anomalies.append(("🌍", f"Нетипичный трафик: {c}",
+                                   f"{today_pct}% трафика сегодня ({v:,} посет.) — {label} за последние дни",
+                                   "#4a3aa7"))
+
+    # ── Сохранение рейтинга моделей в память ────────────────────────────
+    mem.setdefault("model_rankings", {})
+    mem["model_rankings"][yest_iso] = [
+        {"gender": m["gender"], "platform": m["platform"], "model": m["model"],
+         "base": m["base"], "vis": m["vis"],
+         "profile_vis": m["profile_vis"], "stats_vis": m["stats_vis"]}
+        for m in top20_models
+    ]
+    _mr_dates = sorted(mem["model_rankings"].keys())[-30:]
+    mem["model_rankings"] = {d: mem["model_rankings"][d] for d in _mr_dates}
+
+    # ── Сохранение рейтинга шортс в память ──────────────────────────────
+    mem.setdefault("shorts_rankings", {})
+    mem["shorts_rankings"][yest_iso] = [
+        {"gender": m["gender"], "model": m["model"], "vis": m["vis"]}
+        for m in top20_shorts
+    ]
+    _sr_dates = sorted(mem["shorts_rankings"].keys())[-30:]
+    mem["shorts_rankings"] = {d: mem["shorts_rankings"][d] for d in _sr_dates}
+
+    with open(MEMORY_FILE, "w", encoding="utf-8") as _f:
+        import json as _json
+        _json.dump(mem, _f, indent=2, ensure_ascii=False)
 
     # ── История из памяти ────────────────────────────────────────────────
     history_entries = mem["entries"][-14:]  # last 14 days
@@ -1148,6 +1294,111 @@ def write_html(results: dict, out_dir: str, today=None):
     else:
         history_html = "<p style='font-size:12px;color:#898781;'>История появится после нескольких запусков.</p>"
 
+    # ── Топ моделей HTML ─────────────────────────────────────────────────
+    def _model_spark(gender, platform, model_name):
+        """30-day sparkline for a model from memory."""
+        vals = []
+        for _d in sorted(mem.get("model_rankings", {}).keys()):
+            found = next((m for m in mem["model_rankings"][_d]
+                          if m["gender"] == gender and m["platform"] == platform
+                          and m["model"] == model_name), None)
+            vals.append(found["vis"] if found else 0)
+        return _sparkline(vals, "#2a78d6", 22) if len(vals) > 1 else ""
+
+    def _shorts_spark(gender, model_name):
+        """30-day sparkline for a shorts model from memory."""
+        vals = []
+        for _d in sorted(mem.get("shorts_rankings", {}).keys()):
+            found = next((m for m in mem["shorts_rankings"][_d]
+                          if m["gender"] == gender and m["model"] == model_name), None)
+            vals.append(found["vis"] if found else 0)
+        return _sparkline(vals, "#a855f7", 22) if len(vals) > 1 else ""
+
+    _PLAT_COLORS = {"stripchat": "#eb6834", "chaturbate": "#1baf7a",
+                    "bongacams": "#2a78d6", "livejasmin": "#a855f7",
+                    "cam4": "#f59e0b"}
+
+    models_rows_html = ""
+    for i, m in enumerate(top20_models, 1):
+        key = (m["gender"], m["platform"], m["model"])
+        prev_vis = _prev_vis.get(key)
+        delta_str = ""
+        if prev_vis:
+            dv = _delta(m["vis"], prev_vis)
+            col = "#1baf7a" if dv >= 0 else "#e24b4a"
+            delta_str = f'<span style="color:{col};font-size:10px;margin-left:3px;">{"+" if dv>=0 else ""}{dv:.0f}%</span>'
+        is_new = key not in _prev_keys and bool(_prev_rankings)
+        new_badge = '<span style="background:#1baf7a;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;margin-left:4px;">new</span>' if is_new else ""
+        plat_color = _PLAT_COLORS.get(m["platform"], "#898781")
+        spark = _model_spark(m["gender"], m["platform"], m["model"])
+        prof_str = f'<span style="color:#898781;">{m["profile_vis"]:,}</span>' if m["profile_vis"] else "—"
+        stats_str = f'<span style="color:#898781;">{m["stats_vis"]:,}</span>' if m["stats_vis"] else "—"
+        models_rows_html += (
+            f'<tr style="border-bottom:.5px solid #eeeee8;vertical-align:middle;">'
+            f'<td style="padding:5px 6px 5px 0;font-size:11px;color:#898781;text-align:right;">{i}</td>'
+            f'<td style="padding:5px 8px 5px 0;font-size:11px;max-width:160px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">'
+            f'{m["model"]}{new_badge}</td>'
+            f'<td style="padding:5px 8px;font-size:10px;white-space:nowrap;">'
+            f'<span style="color:{plat_color};font-weight:600;">{m["platform"]}</span> '
+            f'<span style="color:#898781;">{m["gender"]}</span></td>'
+            f'<td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;">{m["vis"]:,}{delta_str}</td>'
+            f'<td style="padding:5px 8px;font-size:11px;text-align:right;">{prof_str}</td>'
+            f'<td style="padding:5px 0 5px 8px;font-size:11px;text-align:right;">{stats_str}</td>'
+            f'<td style="padding:5px 0 5px 12px;">{spark}</td>'
+            f'</tr>'
+        )
+
+    dropped_html = ""
+    if models_dropped:
+        dropped_items = " · ".join(
+            f'<span style="color:#e24b4a;">{m["model"]}</span> '
+            f'<span style="color:#898781;font-size:10px;">({m["platform"]})</span>'
+            for m in models_dropped[:5]
+        )
+        dropped_html = f'<div style="margin-top:12px;font-size:11px;color:#52514e;">⬇ Выпали из топ 20: {dropped_items}</div>'
+
+    models_table_html = f"""<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;min-width:520px;">
+  <thead><tr style="border-bottom:1.5px solid #d5d4cd;">
+    <th style="padding:0 6px 6px 0;font-size:10px;color:#898781;text-align:right;">#</th>
+    <th style="padding:0 8px 6px 0;font-size:10px;color:#898781;text-align:left;">Модель</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:left;">Платформа</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:right;">stream</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:right;">profile</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:right;">stats-and-schedule</th>
+    <th style="padding:0 0 6px 12px;font-size:10px;color:#898781;">30 дней</th>
+  </tr></thead>
+  <tbody>{models_rows_html}</tbody>
+</table></div>{dropped_html}"""
+
+    # ── Shorts топ ───────────────────────────────────────────────────────
+    if top20_shorts:
+        _shorts_rows = ""
+        for i, m in enumerate(top20_shorts, 1):
+            spark = _shorts_spark(m["gender"], m["model"])
+            _shorts_rows += (
+                f'<tr style="border-bottom:.5px solid #eeeee8;vertical-align:middle;">'
+                f'<td style="padding:5px 6px 5px 0;font-size:11px;color:#898781;text-align:right;">{i}</td>'
+                f'<td style="padding:5px 8px 5px 0;font-size:11px;">{m["model"]}</td>'
+                f'<td style="padding:5px 8px;font-size:10px;color:#898781;">{m["gender"]}</td>'
+                f'<td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;">{m["vis"]:,}</td>'
+                f'<td style="padding:5px 0 5px 12px;">{spark}</td>'
+                f'</tr>'
+            )
+        shorts_table_html = f"""<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;min-width:300px;">
+  <thead><tr style="border-bottom:1.5px solid #d5d4cd;">
+    <th style="padding:0 6px 6px 0;font-size:10px;color:#898781;text-align:right;">#</th>
+    <th style="padding:0 8px 6px 0;font-size:10px;color:#898781;text-align:left;">Модель</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:left;">Пол</th>
+    <th style="padding:0 8px 6px;font-size:10px;color:#898781;text-align:right;">Посет.</th>
+    <th style="padding:0 0 6px 12px;font-size:10px;color:#898781;">30 дней</th>
+  </tr></thead>
+  <tbody>{_shorts_rows}</tbody>
+</table></div>"""
+    else:
+        shorts_table_html = "<p style='font-size:12px;color:#898781;'>Нет данных по /shorts/.</p>"
+
     # Страницы для наблюдения HTML
     if watch_pages:
         watch_rows = "".join(
@@ -1171,6 +1422,25 @@ def write_html(results: dict, out_dir: str, today=None):
         watch_html = "<p style='font-size:12px;color:#898781;'>Выраженных аномалий на страницах нет.</p>"
 
     updated = datetime.now(timezone.utc).strftime("%d.%m.%Y %H:%M") + " UTC"
+
+    # ── Аномалии HTML ────────────────────────────────────────────────────
+    if anomalies:
+        _anom_cards = ""
+        for a in anomalies[:8]:
+            _anom_cards += (
+                f'<div style="background:#fff;border-radius:10px;border:.5px solid rgba(11,11,11,.08);'
+                f'padding:12px 16px;border-left:3px solid {a[3]};">'
+                f'<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:3px;">'
+                f'<span style="font-size:13px;">{a[0]}</span>'
+                f'<span style="font-size:12px;font-weight:600;color:{a[3]};">{a[1]}</span></div>'
+                f'<div style="font-size:11px;color:#52514e;">{a[2]}</div></div>'
+            )
+        anomalies_html = (
+            f'<div class="sec">⚠ Аномалии — {yest_label}</div>'
+            f'<div style="display:flex;flex-direction:column;gap:8px;">{_anom_cards}</div>'
+        )
+    else:
+        anomalies_html = ""
 
     # ── Dynamic HTML snippets ────────────────────────────────────────────
     br_rows = "".join(
@@ -1479,9 +1749,20 @@ h1{{font-size:16px;font-weight:600;}}
   </div>
 </div>
 
+<!-- ══ АНОМАЛИИ ═══════════════════════════════════════════════════════ -->
+{anomalies_html}
+
 <!-- ══ ТОП СТРАНИЦ ════════════════════════════════════════════════════ -->
 <div class="sec">Топ 20 страниц — {yest_label} · динамика к позавчера</div>
 <div class="card">{pages_table_html}</div>
+
+<!-- ══ МОДЕЛИ ════════════════════════════════════════════════════════ -->
+<div class="sec">Топ 20 моделей — {yest_label} · профиль · статистика · рост</div>
+<div class="card" style="padding:16px 18px;">{models_table_html}</div>
+
+<!-- ══ SHORTS ════════════════════════════════════════════════════════ -->
+<div class="sec">Топ моделей / shorts — {yest_label}</div>
+<div class="card" style="padding:16px 18px;">{shorts_table_html}</div>
 
 <!-- ══ НЕДЕЛЯ ════════════════════════════════════════════════════════ -->
 <div class="sec">Неделя — последние 7 полных дней</div>
