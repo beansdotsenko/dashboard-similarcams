@@ -166,8 +166,8 @@
         "reco_dism": 438,
         "reco_all": 12,
         "vis_7d": 24445,
-        "vis_30d": 95683,
-        "cr_30d": 19664,
+        "vis_30d": 95816,
+        "cr_30d": 19712,
         "ctr_30d_avg": 10.6,
         "peak_vis": 3972
       },
@@ -194,33 +194,42 @@
     "2026-08-12": [
       {
         "country": "US",
-        "vis": 483,
-        "pct": 16.1
+        "vis": 521,
+        "pct": 17.4
       },
       {
         "country": "IN",
-        "vis": 244,
-        "pct": 8.2
+        "vis": 256,
+        "pct": 8.6
       },
       {
         "country": "DE",
-        "vis": 90,
-        "pct": 3.0
+        "vis": 101,
+        "pct": 3.4
       },
       {
         "country": "UA",
-        "vis": 75,
-        "pct": 2.5
+        "vis": 78,
+        "pct": 2.6
       },
       {
         "country": "NL",
-        "vis": 57,
-        "pct": 1.9
+        "vis": 62,
+        "pct": 2.1
       }
     ]
   },
   "model_rankings": {
     "2026-08-12": [
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "amylaaa",
+        "base": "/cams/female/stripchat/amylaaa",
+        "vis": 6,
+        "profile_vis": 59,
+        "stats_vis": 0
+      },
       {
         "gender": "female",
         "platform": "stripchat",
@@ -247,6 +256,24 @@
         "vis": 15,
         "profile_vis": 0,
         "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "pleasures_wish",
+        "base": "/cams/couple/stripchat/pleasures_wish",
+        "vis": 5,
+        "profile_vis": 9,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "yyydgda",
+        "base": "/cams/couple/stripchat/yyydgda",
+        "vis": 4,
+        "profile_vis": 0,
+        "stats_vis": 7
       },
       {
         "gender": "couple",
@@ -296,15 +323,6 @@
       {
         "gender": "female",
         "platform": "stripchat",
-        "model": "amylaaa",
-        "base": "/cams/female/stripchat/amylaaa",
-        "vis": 6,
-        "profile_vis": 59,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
         "model": "rayal_bhabi",
         "base": "/cams/female/stripchat/rayal_bhabi",
         "vis": 6,
@@ -318,15 +336,6 @@
         "base": "/cams/female/chaturbate/bluuemarine",
         "vis": 6,
         "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "couple",
-        "platform": "stripchat",
-        "model": "pleasures_wish",
-        "base": "/cams/couple/stripchat/pleasures_wish",
-        "vis": 5,
-        "profile_vis": 9,
         "stats_vis": 0
       },
       {
@@ -364,15 +373,6 @@
         "vis": 5,
         "profile_vis": 0,
         "stats_vis": 0
-      },
-      {
-        "gender": "couple",
-        "platform": "stripchat",
-        "model": "yyydgda",
-        "base": "/cams/couple/stripchat/yyydgda",
-        "vis": 4,
-        "profile_vis": 0,
-        "stats_vis": 7
       },
       {
         "gender": "couple",
