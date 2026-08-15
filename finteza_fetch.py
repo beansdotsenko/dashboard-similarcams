@@ -107,6 +107,11 @@ def parse_model_url(path: str) -> dict | None:
         return {"gender": parts[1], "platform": "shorts", "model": parts[2],
                 "suffix": "shorts",
                 "base": f"/shorts/{parts[1]}/{parts[2]}"}
+    # /ru/shorts/gender/model
+    if len(parts) >= 4 and parts[0] == "ru" and parts[1] == "shorts":
+        return {"gender": parts[2], "platform": "shorts", "model": parts[3],
+                "suffix": "shorts",
+                "base": f"/shorts/{parts[2]}/{parts[3]}"}
     return None
 
 
