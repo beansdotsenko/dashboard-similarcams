@@ -869,26 +869,27 @@ def write_html(results: dict, out_dir: str, today=None):
     findings = []   # (icon, title, text, color)
 
     # Трафик
+    _wow_sign = "+" if wow > 0 else ""
     if wow <= -5:
-        findings.append(("↓", "Трафик снижается",
+        findings.append(("↓", f"Трафик {wow:.0f}% WoW",
             f"Последние 7 дней: {vis_7d:,} посет. — на {abs(wow):.1f}% меньше предыдущей семидневки ({vis_prev7:,}).",
             "#e24b4a"))
     elif wow >= 5:
-        findings.append(("↑", "Трафик растёт",
+        findings.append(("↑", f"Трафик +{wow:.0f}% WoW",
             f"Последние 7 дней: {vis_7d:,} посет. — рост {wow:.1f}% WoW. Предыдущая семидневка: {vis_prev7:,}.",
             "#1baf7a"))
     else:
-        findings.append(("→", "Трафик стабилен",
-            f"WoW изменение {'+' if wow>0 else ''}{wow:.1f}%. Средний день за 30д (без аномалий): {round(avg_daily_clean):,} посет.",
+        findings.append(("→", f"Трафик {_wow_sign}{wow:.0f}% WoW",
+            f"WoW изменение {_wow_sign}{wow:.1f}%. Средний день за 30д (без аномалий): {round(avg_daily_clean):,} посет.",
             "#898781"))
 
     # Пик
     if dist_peak <= -20:
-        findings.append(("↓", "Далеко от пика",
+        findings.append(("↓", f"У пика: {100+dist_peak:.0f}% от макс.",
             f"Вчера {vis_y:,} посет. — на {abs(dist_peak):.0f}% ниже 30д-пика {peak_vis:,} ({fz_label(peak_row[0])}).",
             "#e24b4a"))
     elif dist_peak >= -7:
-        findings.append(("★", "Около пика",
+        findings.append(("★", f"У пика: {100+dist_peak:.0f}% от макс.",
             f"Вчера {vis_y:,} — лишь {abs(dist_peak):.0f}% ниже 30д-пика {peak_vis:,} ({fz_label(peak_row[0])}).",
             "#1baf7a"))
 
@@ -957,43 +958,20 @@ def write_html(results: dict, out_dir: str, today=None):
             "#1baf7a"))
 
     # Аномальные дни
-    if anomaly_days:
-        findings.append(("⚠", "Аномальные дни исключены",
-            f"Из 30д расчётов исключены дни с аномально высоким трафиком (>{ANOMALY_MULTIPLIER}× среднего): {', '.join(anomaly_days)}.",
-            "#898781"))
+    # Аномальные дни — убраны из тегов, только в деталях
+    # (anomaly_days доступны для отладки)
 
     # ── Гипотезы и рекомендации ──────────────────────────────────────────
     hypos = []   # (icon, title, text, color)
 
-    # Brand concentration
-    if cr_brands_y and cr_y_total > 0:
-        top_share = round(cr_brands_y[0][1] / cr_y_total * 100)
-        if top_share >= 55:
-            hypos.append(("⚠", "Риск: концентрация бренда",
-                f"{cr_brands_y[0][0]} — {top_share}% ClickRef-кликов. При изменении RevShare или правил партнёрки это потеря большой доли дохода. Рекомендуется диверсификация: тест A/B с другими провайдерами на high-traffic страницах.",
-                "#e24b4a"))
-        elif len(cr_brands_y) >= 3 and cr_brands_y[0][1] / cr_y_total < 0.4:
-            hypos.append(("✓", "Хорошая диверсификация брендов",
-                f"Топ бренд {cr_brands_y[0][0]} — лишь {top_share}% кликов. Распределение здоровое.",
-                "#1baf7a"))
+    # Brand concentration — убрано из гипотез
 
-    # Churn / retention
-    if pct_new_y > 82:
-        hypos.append(("→", "Гипотеза: низкий ретеншн",
-            f"{pct_new_y}% новых посетителей — типично для adult-трафика, но возврат {pct_ret_y}% очень мал. Гипотеза: нет механизма возврата. Что стоит проверить: push-уведомления (например, новые камщицы), weekly email «самое горячее за неделю», bookmark-подсказка после 3й страницы.",
-            "#eb6834"))
-    elif pct_new_y < 72:
-        hypos.append(("✓", "Гипотеза: сильный ретеншн",
-            f"{pct_ret_y}% вернувшихся — высокий показатель. Текущий контент и UX создают причину вернуться. Стоит усилить персонализацию для вернувшихся (недавно просмотренные, рекомендации).",
-            "#1baf7a"))
+    # Retention — убрано
 
     # RecoDrawer
     if reco_shown_y > 0:
         reco_rate = round(reco_shown_y / vis_y * 100, 1) if vis_y else 0
-        if reco_dism_rate > 45:
-            hypos.append(("→", "Гипотеза: RecoDrawer показывается не вовремя",
-                f"Dismissed {reco_dism_rate}% от shown. Высокий процент dismissal может означать что drawer появляется слишком рано или мешает. Гипотеза: попробовать показывать после 2й просмотренной страницы вместо 1й.",
-                "#eb6834"))
+        # RecoDrawer timing — убрано
         if reco_rate < 8 and vis_y > 500:
             hypos.append(("→", "Гипотеза: охват RecoDrawer занижен",
                 f"RecoDrawer shown у {reco_rate}% посетителей ({reco_shown_y:,}/{vis_y:,}). Возможно условия показа слишком строгие (session_, weekly_cap). Проверить правила триггеров.",
@@ -1183,7 +1161,7 @@ def write_html(results: dict, out_dir: str, today=None):
         _json.dump(mem, _f, indent=2, ensure_ascii=False)
 
     # ── История из памяти ────────────────────────────────────────────────
-    history_entries = mem["entries"][-14:]  # last 14 days
+    history_entries = mem["entries"]  # все записи
 
     def _sparkline(vals, color="#2a78d6", h=28):
         """Tiny inline SVG sparkline."""
@@ -1864,7 +1842,7 @@ h1{{font-size:16px;font-weight:600;}}
 <div class="card">{watch_html}</div>
 
 <!-- ══ ИСТОРИЯ ════════════════════════════════════════════════════════ -->
-<div class="sec">История наблюдений — последние 14 дней</div>
+<div class="sec">История наблюдений</div>
 <div class="card" style="padding:16px 18px;">{history_html}</div>
 <div style="margin-top:8px;font-size:11px;color:#898781;line-height:1.6;">
   💡 Чтобы добавить заметку к дню — открой <code>finteza_memory.json</code> и заполни поле <code>"note"</code> нужной записи.<br>
