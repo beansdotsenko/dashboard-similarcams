@@ -1098,9 +1098,12 @@ def write_html(results: dict, out_dir: str, today=None):
         "ctr":         ctr_y,
         "cr_events":   cr_y_ev,
         "cr_unique":   cr_y_us,
-        "reco_shown":  reco_shown_y,
-        "reco_dism":   reco_dism_y,
-        "reco_all":    reco_all_y,
+        "reco_shown":    reco_shown_y,
+        "reco_dism":     reco_dism_y,
+        "reco_all":      reco_all_y,
+        "reco_provcl":   reco_provcl_y,
+        "reco_model_cl": reco_model_cl_y,
+        "reco_cr":       reco_cr_total_y,
         "vis_7d":      vis_7d,
         "vis_30d":     vis_30d,
         "cr_30d":      cr_30d,
@@ -1181,11 +1184,17 @@ def write_html(results: dict, out_dir: str, today=None):
 
     if history_entries:
         # Sparkline data (chronological order)
-        sp_vis  = [e["metrics"].get("visitors",  0) for e in history_entries]
-        sp_ctr  = [e["metrics"].get("ctr",       0) for e in history_entries]
-        sp_pps  = [e["metrics"].get("pps",       0) for e in history_entries]
-        sp_cr   = [e["metrics"].get("cr_events", 0) for e in history_entries]
-        sp_reco = [e["metrics"].get("reco_shown",0) for e in history_entries]
+        sp_vis      = [e["metrics"].get("visitors",    0) for e in history_entries]
+        sp_ctr      = [e["metrics"].get("ctr",         0) for e in history_entries]
+        sp_pps      = [e["metrics"].get("pps",         0) for e in history_entries]
+        sp_cr       = [e["metrics"].get("cr_events",   0) for e in history_entries]
+        sp_reco     = [e["metrics"].get("reco_shown",  0) for e in history_entries]
+        sp_reco_dism    = [e["metrics"].get("reco_dism",     0) for e in history_entries]
+        sp_reco_all     = [e["metrics"].get("reco_all",      0) for e in history_entries]
+        sp_reco_provcl  = [e["metrics"].get("reco_provcl",   0) for e in history_entries]
+        sp_reco_modelcl = [e["metrics"].get("reco_model_cl", 0) for e in history_entries]
+        sp_reco_cr      = [e["metrics"].get("reco_cr",       0) for e in history_entries]
+        sp_hist_labels  = [e["date"][5:] for e in history_entries]  # MM-DD
 
         def _td(val, fmt=",", color=None):
             s = f"{val:{fmt}}" if isinstance(val, int) else (f"{val:.2f}" if isinstance(val, float) else str(val))
@@ -1276,6 +1285,13 @@ def write_html(results: dict, out_dir: str, today=None):
 </table></div>"""
     else:
         history_html = "<p style='font-size:12px;color:#898781;'>История появится после нескольких запусков.</p>"
+        sp_hist_labels  = []
+        sp_reco         = []
+        sp_reco_dism    = []
+        sp_reco_all     = []
+        sp_reco_provcl  = []
+        sp_reco_modelcl = []
+        sp_reco_cr      = []
 
     # ── Топ моделей HTML ─────────────────────────────────────────────────
     def _model_spark(gender, platform, model_name):
@@ -1477,6 +1493,16 @@ def write_html(results: dict, out_dir: str, today=None):
         f'</div>'
         for b in reco_cr_brands_y
     ) if reco_cr_brands_y else '<span style="font-size:11px;color:#898781;">нет данных</span>'
+
+    # ── RecoDrawer history chart arrays ──────────────────────────────────
+    reco_hist_labels  = json.dumps(sp_hist_labels)
+    reco_hist_shown   = json.dumps(sp_reco)
+    reco_hist_dism    = json.dumps(sp_reco_dism)
+    reco_hist_all     = json.dumps(sp_reco_all)
+    reco_hist_provcl  = json.dumps(sp_reco_provcl)
+    reco_hist_modelcl = json.dumps(sp_reco_modelcl)
+    reco_hist_cr      = json.dumps(sp_reco_cr)
+    _rh_has_data      = "true" if any(v > 0 for v in sp_reco) else "false"
 
     html = f"""<!DOCTYPE html>
 <html lang="ru">
@@ -1733,6 +1759,33 @@ h1{{font-size:16px;font-weight:600;}}
   </div>
 </div>
 
+<div class="card" style="margin-bottom:10px;">
+  <div class="cl">Охват и отклонения — история</div>
+  <div class="leg">
+    <span><span class="dot" style="background:#2a78d6;"></span>shown</span>
+    <span><span class="dot" style="background:#e24b4a;"></span>dismissed</span>
+    <span style="font-size:10px;color:#c0bfba;">— — dism % (правая ось)</span>
+  </div>
+  <div class="cw" style="height:200px;"><canvas id="creco_shown"></canvas></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:#898781;margin-top:3px;">
+    <span>← кол-во</span><span>dism % →</span>
+  </div>
+</div>
+<div class="card" style="margin-bottom:10px;">
+  <div class="cl">Клики из drawer — кол-во (левая) + % от shown (правая, пунктир)</div>
+  <div class="leg">
+    <span><span class="dot" style="background:#1baf7a;"></span>all clicked</span>
+    <span><span class="dot" style="background:#47a06e;"></span>prov. clicked</span>
+    <span><span class="dot" style="background:#4a90d9;"></span>model clicked</span>
+    <span><span class="dot" style="background:#eda100;"></span>RecoClickRef</span>
+    <span style="font-size:10px;color:#c0bfba;">— — % от shown</span>
+  </div>
+  <div class="cw" style="height:200px;"><canvas id="creco_clicks"></canvas></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:#898781;margin-top:3px;">
+    <span>← кол-во</span><span>% →</span>
+  </div>
+</div>
+
 <!-- ══ АНОМАЛИИ ═══════════════════════════════════════════════════════ -->
 {anomalies_html}
 
@@ -1913,6 +1966,57 @@ new Chart(document.getElementById('c2'),{{type:'bar',data:{{
   x:{{...ya(0,{p_max_val}*1.15),grid:{{color:grd,lineWidth:.5}}}},
   y:{{grid:{{display:false}},ticks:{{color:tk,font:{{size:11}}}}}}
 }}}}}});
+
+// RecoDrawer history charts
+if({_rh_has_data}) {{
+  const rh_l  = {reco_hist_labels};
+  const rh_sh = {reco_hist_shown};
+  const rh_dm = {reco_hist_dism};
+  const rh_al = {reco_hist_all};
+  const rh_pv = {reco_hist_provcl};
+  const rh_mc = {reco_hist_modelcl};
+  const rh_cr = {reco_hist_cr};
+  const pct   = (arr) => arr.map((v,i) => rh_sh[i] ? +((v/rh_sh[i])*100).toFixed(1) : 0);
+  const dm_pct  = pct(rh_dm);
+  const al_pct  = pct(rh_al);
+  const pv_pct  = pct(rh_pv);
+  const mc_pct  = pct(rh_mc);
+  const cr_pct  = pct(rh_cr);
+
+  // Chart 1: shown + dismissed (abs left) + dism% (right dashed)
+  new Chart(document.getElementById('creco_shown'),{{type:'line',data:{{labels:rh_l,datasets:[
+    {{label:'shown',    data:rh_sh,  borderColor:'#2a78d6',backgroundColor:'#2a78d610',fill:true, borderWidth:2,  pointRadius:2,pointHoverRadius:5,tension:.3,yAxisID:'y'}},
+    {{label:'dismissed',data:rh_dm,  borderColor:'#e24b4a',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'}},
+    {{label:'dism %',   data:dm_pct, borderColor:'#e24b4a',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}}
+  ]}},options:{{...b,
+    plugins:{{legend:{{display:false}},tooltip:{{mode:'index',intersect:false,
+      callbacks:{{label:ctx=>ctx.datasetIndex===2?`dism %: ${{ctx.parsed.y}}%`:`${{ctx.dataset.label}}: ${{ctx.parsed.y.toLocaleString()}}` }} }} }},
+    scales:{{
+      x:xa,
+      y:{{...ya(0,Math.max(...rh_sh)*1.1),position:'left'}},
+      y2:{{...ya(0,70),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',font:{{size:10}},maxTicksLimit:5,callback:v=>v+'%'}}}}
+    }} }} }});
+
+  // Chart 2: clicks abs (left) + % (right dashed)
+  new Chart(document.getElementById('creco_clicks'),{{type:'line',data:{{labels:rh_l,datasets:[
+    {{label:'all clicked',   data:rh_al, borderColor:'#1baf7a',fill:false,borderWidth:2,  pointRadius:3,pointHoverRadius:5,tension:.3,yAxisID:'y'}},
+    {{label:'prov. clicked', data:rh_pv, borderColor:'#47a06e',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'}},
+    {{label:'model clicked', data:rh_mc, borderColor:'#4a90d9',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'}},
+    {{label:'RecoClickRef',  data:rh_cr, borderColor:'#eda100',fill:false,borderWidth:2,  pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'}},
+    {{label:'all %',         data:al_pct,borderColor:'#1baf7a',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}},
+    {{label:'prov %',        data:pv_pct,borderColor:'#47a06e',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}},
+    {{label:'model %',       data:mc_pct,borderColor:'#4a90d9',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}},
+    {{label:'RecoClickRef %',data:cr_pct,borderColor:'#eda100',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}}
+  ]}},options:{{...b,
+    plugins:{{legend:{{display:false}},tooltip:{{mode:'index',intersect:false,
+      filter:item=>item.datasetIndex<4,
+      callbacks:{{label:ctx=>`${{ctx.dataset.label}}: ${{ctx.parsed.y}} (${{[al_pct,pv_pct,mc_pct,cr_pct][ctx.datasetIndex][ctx.dataIndex]}}%)` }} }} }},
+    scales:{{
+      x:xa,
+      y:{{...ya(0,Math.max(...rh_al,...rh_cr||[0])*1.15),position:'left'}},
+      y2:{{...ya(0,Math.max(...al_pct)*1.2),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',font:{{size:10}},maxTicksLimit:5,callback:v=>v+'%'}}}}
+    }} }} }});
+}}
 
 // Device donut
 new Chart(document.getElementById('c5'),{{type:'doughnut',data:{{

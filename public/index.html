@@ -64,7 +64,7 @@ h1{font-size:16px;font-weight:600;}
 <body>
 <div class="hdr">
   <h1>similarcams.com</h1>
-  <span class="meta">обновлено: 28.08.2026 21:14 UTC</span>
+  <span class="meta">обновлено: 28.08.2026 21:19 UTC</span>
 </div>
 
 <!-- ══ ВЧЕРА ══════════════════════════════════════════════════════════ -->
@@ -238,6 +238,33 @@ h1{font-size:16px;font-weight:600;}
       <div class="cl">RecoClickRef по брендам (16 кликов)</div>
       <div style="padding-top:10px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><span style="width:82px;font-size:11px;white-space:nowrap;flex-shrink:0;">chaturbate</span><div style="flex:1;background:#f0efe8;border-radius:3px;height:6px;"><div style="width:100%;height:100%;background:#eda100;border-radius:3px;"></div></div><span style="font-size:11px;font-weight:600;width:28px;text-align:right;">6</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><span style="width:82px;font-size:11px;white-space:nowrap;flex-shrink:0;">camsoda</span><div style="flex:1;background:#f0efe8;border-radius:3px;height:6px;"><div style="width:83%;height:100%;background:#eda100;border-radius:3px;"></div></div><span style="font-size:11px;font-weight:600;width:28px;text-align:right;">5</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><span style="width:82px;font-size:11px;white-space:nowrap;flex-shrink:0;">stripchat</span><div style="flex:1;background:#f0efe8;border-radius:3px;height:6px;"><div style="width:50%;height:100%;background:#eda100;border-radius:3px;"></div></div><span style="font-size:11px;font-weight:600;width:28px;text-align:right;">3</span></div><div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><span style="width:82px;font-size:11px;white-space:nowrap;flex-shrink:0;">bongacams</span><div style="flex:1;background:#f0efe8;border-radius:3px;height:6px;"><div style="width:33%;height:100%;background:#eda100;border-radius:3px;"></div></div><span style="font-size:11px;font-weight:600;width:28px;text-align:right;">2</span></div></div>
     </div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:10px;">
+  <div class="cl">Охват и отклонения — история</div>
+  <div class="leg">
+    <span><span class="dot" style="background:#2a78d6;"></span>shown</span>
+    <span><span class="dot" style="background:#e24b4a;"></span>dismissed</span>
+    <span style="font-size:10px;color:#c0bfba;">— — dism % (правая ось)</span>
+  </div>
+  <div class="cw" style="height:200px;"><canvas id="creco_shown"></canvas></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:#898781;margin-top:3px;">
+    <span>← кол-во</span><span>dism % →</span>
+  </div>
+</div>
+<div class="card" style="margin-bottom:10px;">
+  <div class="cl">Клики из drawer — кол-во (левая) + % от shown (правая, пунктир)</div>
+  <div class="leg">
+    <span><span class="dot" style="background:#1baf7a;"></span>all clicked</span>
+    <span><span class="dot" style="background:#47a06e;"></span>prov. clicked</span>
+    <span><span class="dot" style="background:#4a90d9;"></span>model clicked</span>
+    <span><span class="dot" style="background:#eda100;"></span>RecoClickRef</span>
+    <span style="font-size:10px;color:#c0bfba;">— — % от shown</span>
+  </div>
+  <div class="cw" style="height:200px;"><canvas id="creco_clicks"></canvas></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:#898781;margin-top:3px;">
+    <span>← кол-во</span><span>% →</span>
   </div>
 </div>
 
@@ -492,6 +519,57 @@ new Chart(document.getElementById('c2'),{type:'bar',data:{
   x:{...ya(0,7937*1.15),grid:{color:grd,lineWidth:.5}},
   y:{grid:{display:false},ticks:{color:tk,font:{size:11}}}
 }}});
+
+// RecoDrawer history charts
+if(true) {
+  const rh_l  = ["08-07", "08-08", "08-09", "08-10", "08-12", "08-14", "08-15", "08-16", "08-17", "08-18", "08-19", "08-20", "08-21", "08-22", "08-23", "08-24", "08-25", "08-26", "08-27"];
+  const rh_sh = [952, 1066, 1118, 979, 885, 853, 864, 1172, 1145, 1134, 1105, 1174, 1197, 1460, 1452, 1559, 1643, 1427, 1373];
+  const rh_dm = [434, 495, 556, 459, 438, 382, 425, 524, 547, 567, 487, 541, 553, 665, 682, 743, 743, 657, 652];
+  const rh_al = [16, 19, 12, 19, 12, 13, 8, 18, 20, 14, 36, 474, 451, 524, 538, 29, 30, 24, 21];
+  const rh_pv = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25];
+  const rh_mc = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 104];
+  const rh_cr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16];
+  const pct   = (arr) => arr.map((v,i) => rh_sh[i] ? +((v/rh_sh[i])*100).toFixed(1) : 0);
+  const dm_pct  = pct(rh_dm);
+  const al_pct  = pct(rh_al);
+  const pv_pct  = pct(rh_pv);
+  const mc_pct  = pct(rh_mc);
+  const cr_pct  = pct(rh_cr);
+
+  // Chart 1: shown + dismissed (abs left) + dism% (right dashed)
+  new Chart(document.getElementById('creco_shown'),{type:'line',data:{labels:rh_l,datasets:[
+    {label:'shown',    data:rh_sh,  borderColor:'#2a78d6',backgroundColor:'#2a78d610',fill:true, borderWidth:2,  pointRadius:2,pointHoverRadius:5,tension:.3,yAxisID:'y'},
+    {label:'dismissed',data:rh_dm,  borderColor:'#e24b4a',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'},
+    {label:'dism %',   data:dm_pct, borderColor:'#e24b4a',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}
+  ]},options:{...b,
+    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,
+      callbacks:{label:ctx=>ctx.datasetIndex===2?`dism %: ${ctx.parsed.y}%`:`${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` } } },
+    scales:{
+      x:xa,
+      y:{...ya(0,Math.max(...rh_sh)*1.1),position:'left'},
+      y2:{...ya(0,70),position:'right',grid:{display:false},ticks:{color:'#c0bfba',font:{size:10},maxTicksLimit:5,callback:v=>v+'%'}}
+    } } });
+
+  // Chart 2: clicks abs (left) + % (right dashed)
+  new Chart(document.getElementById('creco_clicks'),{type:'line',data:{labels:rh_l,datasets:[
+    {label:'all clicked',   data:rh_al, borderColor:'#1baf7a',fill:false,borderWidth:2,  pointRadius:3,pointHoverRadius:5,tension:.3,yAxisID:'y'},
+    {label:'prov. clicked', data:rh_pv, borderColor:'#47a06e',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'},
+    {label:'model clicked', data:rh_mc, borderColor:'#4a90d9',fill:false,borderWidth:1.5,pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'},
+    {label:'RecoClickRef',  data:rh_cr, borderColor:'#eda100',fill:false,borderWidth:2,  pointRadius:2,pointHoverRadius:4,tension:.3,yAxisID:'y'},
+    {label:'all %',         data:al_pct,borderColor:'#1baf7a',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'},
+    {label:'prov %',        data:pv_pct,borderColor:'#47a06e',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'},
+    {label:'model %',       data:mc_pct,borderColor:'#4a90d9',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'},
+    {label:'RecoClickRef %',data:cr_pct,borderColor:'#eda100',borderDash:[4,3],fill:false,borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}
+  ]},options:{...b,
+    plugins:{legend:{display:false},tooltip:{mode:'index',intersect:false,
+      filter:item=>item.datasetIndex<4,
+      callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.parsed.y} (${[al_pct,pv_pct,mc_pct,cr_pct][ctx.datasetIndex][ctx.dataIndex]}%)` } } },
+    scales:{
+      x:xa,
+      y:{...ya(0,Math.max(...rh_al,...rh_cr||[0])*1.15),position:'left'},
+      y2:{...ya(0,Math.max(...al_pct)*1.2),position:'right',grid:{display:false},ticks:{color:'#c0bfba',font:{size:10},maxTicksLimit:5,callback:v=>v+'%'}}
+    } } });
+}
 
 // Device donut
 new Chart(document.getElementById('c5'),{type:'doughnut',data:{
