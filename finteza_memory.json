@@ -14,12 +14,15 @@
         "cr_unique": 413,
         "reco_shown": 952,
         "reco_dism": 434,
-        "reco_all": 16,
+        "reco_all": 0,
         "vis_7d": 22048,
         "vis_30d": 95194,
         "cr_30d": 18507,
         "ctr_30d_avg": 10.2,
-        "peak_vis": 3533
+        "peak_vis": 3533,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -52,12 +55,15 @@
         "cr_unique": 469,
         "reco_shown": 1066,
         "reco_dism": 495,
-        "reco_all": 19,
+        "reco_all": 0,
         "vis_7d": 22943,
         "vis_30d": 93906,
         "cr_30d": 18535,
         "ctr_30d_avg": 10.3,
-        "peak_vis": 3797
+        "peak_vis": 3797,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -90,12 +96,15 @@
         "cr_unique": 514,
         "reco_shown": 1118,
         "reco_dism": 556,
-        "reco_all": 12,
+        "reco_all": 0,
         "vis_7d": 23824,
         "vis_30d": 94667,
         "cr_30d": 18992,
         "ctr_30d_avg": 10.4,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -128,12 +137,15 @@
         "cr_unique": 445,
         "reco_shown": 979,
         "reco_dism": 459,
-        "reco_all": 19,
+        "reco_all": 0,
         "vis_7d": 24338,
         "vis_30d": 95060,
         "cr_30d": 19232,
         "ctr_30d_avg": 10.4,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -164,12 +176,15 @@
         "cr_unique": 349,
         "reco_shown": 885,
         "reco_dism": 438,
-        "reco_all": 12,
+        "reco_all": 0,
         "vis_7d": 24445,
         "vis_30d": 95534,
         "cr_30d": 19639,
         "ctr_30d_avg": 10.6,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -202,12 +217,15 @@
         "cr_unique": 329,
         "reco_shown": 853,
         "reco_dism": 382,
-        "reco_all": 13,
+        "reco_all": 0,
         "vis_7d": 35787,
         "vis_30d": 106893,
         "cr_30d": 19797,
         "ctr_30d_avg": 9.6,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -246,12 +264,15 @@
         "cr_unique": 341,
         "reco_shown": 864,
         "reco_dism": 425,
-        "reco_all": 8,
+        "reco_all": 0,
         "vis_7d": 34845,
         "vis_30d": 106636,
         "cr_30d": 19897,
         "ctr_30d_avg": 9.7,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -286,12 +307,15 @@
         "cr_unique": 438,
         "reco_shown": 1172,
         "reco_dism": 524,
-        "reco_all": 18,
+        "reco_all": 0,
         "vis_7d": 34538,
         "vis_30d": 107774,
         "cr_30d": 20230,
         "ctr_30d_avg": 9.7,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -323,12 +347,15 @@
         "cr_unique": 461,
         "reco_shown": 1145,
         "reco_dism": 547,
-        "reco_all": 20,
+        "reco_all": 0,
         "vis_7d": 34680,
         "vis_30d": 108659,
         "cr_30d": 20452,
         "ctr_30d_avg": 9.8,
-        "peak_vis": 3972
+        "peak_vis": 3972,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -362,12 +389,15 @@
         "cr_unique": 418,
         "reco_shown": 1134,
         "reco_dism": 567,
-        "reco_all": 14,
+        "reco_all": 0,
         "vis_7d": 35417,
         "vis_30d": 109575,
         "cr_30d": 20675,
         "ctr_30d_avg": 9.9,
-        "peak_vis": 4044
+        "peak_vis": 4044,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -402,12 +432,15 @@
         "cr_unique": 429,
         "reco_shown": 1105,
         "reco_dism": 487,
-        "reco_all": 36,
+        "reco_all": 0,
         "vis_7d": 36167,
         "vis_30d": 110669,
         "cr_30d": 21024,
         "ctr_30d_avg": 9.9,
-        "peak_vis": 4044
+        "peak_vis": 4044,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик растёт",
@@ -440,12 +473,15 @@
         "cr_unique": 452,
         "reco_shown": 1174,
         "reco_dism": 541,
-        "reco_all": 474,
+        "reco_all": 0,
         "vis_7d": 0,
         "vis_30d": 0,
         "cr_30d": 0,
         "ctr_30d_avg": 0,
-        "peak_vis": 4292
+        "peak_vis": 4292,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "восстановлено из CSV"
@@ -468,12 +504,15 @@
         "cr_unique": 517,
         "reco_shown": 1197,
         "reco_dism": 553,
-        "reco_all": 451,
+        "reco_all": 0,
         "vis_7d": 0,
         "vis_30d": 0,
         "cr_30d": 0,
         "ctr_30d_avg": 0,
-        "peak_vis": 4541
+        "peak_vis": 4541,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "восстановлено из CSV"
@@ -496,12 +535,15 @@
         "cr_unique": 606,
         "reco_shown": 1460,
         "reco_dism": 665,
-        "reco_all": 524,
+        "reco_all": 0,
         "vis_7d": 0,
         "vis_30d": 0,
         "cr_30d": 0,
         "ctr_30d_avg": 0,
-        "peak_vis": 5147
+        "peak_vis": 5147,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "восстановлено из CSV"
@@ -524,12 +566,15 @@
         "cr_unique": 623,
         "reco_shown": 1452,
         "reco_dism": 682,
-        "reco_all": 538,
+        "reco_all": 0,
         "vis_7d": 0,
         "vis_30d": 0,
         "cr_30d": 0,
         "ctr_30d_avg": 0,
-        "peak_vis": 5189
+        "peak_vis": 5189,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "восстановлено из CSV"
@@ -552,12 +597,15 @@
         "cr_unique": 550,
         "reco_shown": 1559,
         "reco_dism": 743,
-        "reco_all": 29,
+        "reco_all": 0,
         "vis_7d": 29843,
         "vis_30d": 120631,
         "cr_30d": 23616,
         "ctr_30d_avg": 10.2,
-        "peak_vis": 4839
+        "peak_vis": 4839,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик снижается",
@@ -593,12 +641,15 @@
         "cr_unique": 614,
         "reco_shown": 1643,
         "reco_dism": 743,
-        "reco_all": 30,
+        "reco_all": 0,
         "vis_7d": 30797,
         "vis_30d": 119841,
         "cr_30d": 23502,
         "ctr_30d_avg": 10.2,
-        "peak_vis": 4998
+        "peak_vis": 4998,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик снижается",
@@ -633,12 +684,15 @@
         "cr_unique": 545,
         "reco_shown": 1427,
         "reco_dism": 657,
-        "reco_all": 24,
+        "reco_all": 0,
         "vis_7d": 31907,
         "vis_30d": 123129,
         "cr_30d": 24278,
         "ctr_30d_avg": 10.3,
-        "peak_vis": 4998
+        "peak_vis": 4998,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0
       },
       "findings": [
         "Трафик снижается",
