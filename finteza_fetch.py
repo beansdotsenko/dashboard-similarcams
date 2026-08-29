@@ -2013,7 +2013,7 @@ if({_rh_has_data}) {{
       callbacks:{{label:ctx=>`${{ctx.dataset.label}}: ${{ctx.parsed.y}} (${{[al_pct,pv_pct,mc_pct,cr_pct][ctx.datasetIndex][ctx.dataIndex]}}%)` }} }} }},
     scales:{{
       x:xa,
-      y:{{...ya(0,Math.max(...rh_al,...rh_cr||[0])*1.15),position:'left'}},
+      y:{{...ya(0,Math.max(...rh_al,...rh_pv,...rh_mc,...rh_cr,0)*1.2),position:'left'}},
       y2:{{...ya(0,Math.max(...al_pct)*1.2),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',font:{{size:10}},maxTicksLimit:5,callback:v=>v+'%'}}}}
     }} }} }});
 }}
