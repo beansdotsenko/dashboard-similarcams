@@ -1976,7 +1976,7 @@ if({_rh_has_data}) {{
   const rh_pv = {reco_hist_provcl};
   const rh_mc = {reco_hist_modelcl};
   const rh_cr = {reco_hist_cr};
-  const pct   = (arr) => arr.map((v,i) => rh_sh[i] ? +((v/rh_sh[i])*100).toFixed(1) : 0);
+  const pct   = (arr) => arr.map((v,i) => rh_sh[i] ? Math.round(v/rh_sh[i]*1000)/10 : 0);
   const dm_pct  = pct(rh_dm);
   const al_pct  = pct(rh_al);
   const pv_pct  = pct(rh_pv);
@@ -2014,7 +2014,7 @@ if({_rh_has_data}) {{
     scales:{{
       x:xa,
       y:{{...ya(0,Math.max(...rh_al,...rh_pv,...rh_mc,...rh_cr,0)*1.2),position:'left'}},
-      y2:{{...ya(0,Math.max(...al_pct)*1.2),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',font:{{size:10}},maxTicksLimit:5,callback:v=>v+'%'}}}}
+      y2:{{...ya(0,Math.ceil(Math.max(...al_pct,...pv_pct,...mc_pct,...cr_pct,0)*1.3)),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',font:{{size:10}},maxTicksLimit:5,callback:v=>Math.round(v*10)/10+'%'}}}}
     }} }} }});
 }}
 
