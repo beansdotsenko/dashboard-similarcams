@@ -805,8 +805,8 @@
         "reco_model_cl": 73,
         "reco_cr": 27,
         "vis_7d": 32258,
-        "vis_30d": 125818,
-        "cr_30d": 24961,
+        "vis_30d": 126271,
+        "cr_30d": 25087,
         "ctr_30d_avg": 10.4,
         "peak_vis": 4998
       },
@@ -1124,28 +1124,28 @@
     "2026-08-29": [
       {
         "country": "US",
-        "vis": 659,
-        "pct": 15.7
+        "vis": 748,
+        "pct": 17.8
       },
       {
         "country": "IN",
-        "vis": 393,
-        "pct": 9.3
+        "vis": 514,
+        "pct": 12.2
       },
       {
         "country": "DE",
-        "vis": 100,
-        "pct": 2.4
+        "vis": 128,
+        "pct": 3.0
       },
       {
         "country": "UA",
-        "vis": 78,
-        "pct": 1.9
+        "vis": 101,
+        "pct": 2.4
       },
       {
         "country": "RU",
-        "vis": 69,
-        "pct": 1.6
+        "vis": 81,
+        "pct": 1.9
       }
     ]
   },
