@@ -1042,6 +1042,11 @@ def write_html(results: dict, out_dir: str, today=None):
 
     # ── Пик часа вчера ──────────────────────────────────────────────────
     _hourly_yest = _rows(results, "hourly_yesterday")  # [hour_ts, total_users]
+    _hourly_arr  = [0] * 24
+    for _r in _hourly_yest:
+        _unix = int(_r[0]) // 10_000_000 - 11_644_473_600
+        _hr   = datetime.fromtimestamp(_unix, tz=timezone.utc).hour
+        _hourly_arr[_hr] = int(_r[1])
     if _hourly_yest:
         _ph_row   = max(_hourly_yest, key=lambda r: int(r[1]))
         _peak_hr  = int(str(fz_hour(_ph_row[0])).rstrip('h'))
@@ -1049,8 +1054,29 @@ def write_html(results: dict, out_dir: str, today=None):
         peak_hr_html = f"{_peak_hr:02d}:00–{(_peak_hr+1)%24:02d}:00"
         peak_hr_sub  = f"{_peak_vis:,} посет."
     else:
+        _peak_hr     = -1
         peak_hr_html = "—"
         peak_hr_sub  = ""
+    # SVG bar chart (24 bars)
+    _h_max = max(_hourly_arr) or 1
+    _bar_w, _bar_gap, _chart_h = 7, 2, 52
+    _bars_svg = "".join(
+        f'<rect x="{i*(_bar_w+_bar_gap)}" '
+        f'y="{round(_chart_h - v/_h_max*_chart_h)}" '
+        f'width="{_bar_w}" '
+        f'height="{max(1, round(v/_h_max*_chart_h))}" '
+        f'fill="{"#2a78d6" if i==_peak_hr else "#c8daf5"}" rx="1"/>'
+        for i, v in enumerate(_hourly_arr)
+    )
+    _total_w = 24 * (_bar_w + _bar_gap) - _bar_gap
+    hourly_svg = (
+        f'<svg viewBox="0 0 {_total_w} {_chart_h}" width="100%" height="{_chart_h}" '
+        f'xmlns="http://www.w3.org/2000/svg" style="display:block;margin-top:10px;">'
+        f'{_bars_svg}'
+        f'</svg>'
+        f'<div style="display:flex;justify-content:space-between;font-size:9px;color:#b0afa8;margin-top:2px;">'
+        f'<span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>'
+    )
 
     # ── Топ страны ───────────────────────────────────────────────────────
     _cntry = [r for r in _rows(results, "audience_country") if r[0] != "[other]"][:10]
@@ -1702,8 +1728,9 @@ h1{{font-size:16px;font-weight:600;}}
   </div>
   <div class="card">
     <div class="cl">Пик часа вчера</div>
-    <div style="margin-top:12px;font-size:22px;font-weight:700;color:#2a78d6;">{peak_hr_html}</div>
-    <div style="font-size:12px;color:#52514e;margin-top:4px;">{peak_hr_sub}</div>
+    <div style="margin-top:10px;font-size:20px;font-weight:700;color:#2a78d6;">{peak_hr_html}</div>
+    <div style="font-size:12px;color:#52514e;margin-top:2px;">{peak_hr_sub}</div>
+    {hourly_svg}
   </div>
 </div>
 
