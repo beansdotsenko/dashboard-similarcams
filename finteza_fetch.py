@@ -409,7 +409,7 @@ def main():
             p.update(extra)
         return fetch("count", p)
 
-    results["audience_country"]  = audience("country")
+    results["audience_country"]  = audience("country", limit="10")
     results["audience_device"]   = audience("ua_device", limit="4")
     results["audience_os"]       = audience("ua_os")
     results["audience_browser"]  = audience("ua_client_name")
@@ -1053,8 +1053,18 @@ def write_html(results: dict, out_dir: str, today=None):
         peak_hr_sub  = ""
 
     # ── Топ страны ───────────────────────────────────────────────────────
-    _cntry = [r for r in _rows(results, "audience_country") if r[0] != "[other]"][:5]
+    _cntry = [r for r in _rows(results, "audience_country") if r[0] != "[other]"][:10]
     _cntry_total = sum(int(r[1]) for r in _cntry)
+
+    def _flag(code: str) -> str:
+        """ISO 2-letter country code → flag emoji."""
+        try:
+            c = str(code).upper().strip()
+            if len(c) != 2 or not c.isalpha():
+                return ""
+            return chr(0x1F1E6 + ord(c[0]) - 65) + chr(0x1F1E6 + ord(c[1]) - 65)
+        except Exception:
+            return ""
 
     def _card(icon, title, text, color):
         return f"""<div style="background:#fff;border-radius:10px;border:.5px solid rgba(11,11,11,.08);
@@ -1676,37 +1686,19 @@ h1{{font-size:16px;font-weight:600;}}
   </div>
 </div>
 
-<div class="g4">
+<div class="g2">
   <div class="card">
     <div class="cl">Топ страны</div>
     <div style="padding-top:8px;">{"".join(
-      f'<div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px;">'
+      f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:11px;">'
+      f'<span style="display:flex;align-items:center;gap:6px;">'
+      f'<span style="font-size:15px;line-height:1;">{_flag(r[0])}</span>'
       f'<span>{r[0]}</span>'
-      f'<span style="font-weight:600;">{int(r[1]):,} <span style="color:#898781;font-weight:400;">({round(int(r[1])/_cntry_total*100) if _cntry_total else 0}%)</span></span>'
+      f'</span>'
+      f'<span style="font-weight:600;">{int(r[1]):,} <span style="color:#898781;font-weight:400;">({round(int(r[1])/vis_y*100) if vis_y else 0}%)</span></span>'
       f'</div>'
       for r in _cntry
     )}</div>
-  </div>
-  <div class="card">
-    <div class="cl">Устройства</div>
-    <div style="padding-top:8px;">{"".join(
-      f'<div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px;">'
-      f'<span>{r[0]}</span>'
-      f'<span style="font-weight:600;">{int(r[1]):,}</span>'
-      f'</div>'
-      for r in dev_rows
-    )}</div>
-  </div>
-  <div class="card">
-    <div class="cl">Источники вчера</div>
-    <div style="padding-top:8px;">
-      <div style="font-size:11px;margin-bottom:3px;display:flex;justify-content:space-between;"><span>🔗 Direct</span><span style="font-weight:600;">{round(_direct/_src_total*100)}%</span></div>
-      {_src_bar(_direct, _src_total, "#2a78d6")}
-      <div style="font-size:11px;margin-bottom:3px;display:flex;justify-content:space-between;"><span>🔍 Search</span><span style="font-weight:600;">{round(_search/_src_total*100)}%</span></div>
-      {_src_bar(_search, _src_total, "#1baf7a")}
-      <div style="font-size:11px;margin-bottom:3px;display:flex;justify-content:space-between;"><span>🌐 Referral</span><span style="font-weight:600;">{round(_referral/_src_total*100)}%</span></div>
-      {_src_bar(_referral, _src_total, "#888780")}
-    </div>
   </div>
   <div class="card">
     <div class="cl">Пик часа вчера</div>
