@@ -1069,13 +1069,31 @@ def write_html(results: dict, out_dir: str, today=None):
         for i, v in enumerate(_hourly_arr)
     )
     _total_w = 24 * (_bar_w + _bar_gap) - _bar_gap
+    _periods = [
+        ("🌙 Ночь",  sum(_hourly_arr[0:6])),
+        ("🌅 Утро",  sum(_hourly_arr[6:12])),
+        ("☀️ День",  sum(_hourly_arr[12:18])),
+        ("🌆 Вечер", sum(_hourly_arr[18:24])),
+    ]
+    _best_period = max(_periods, key=lambda x: x[1])[0] if any(v for _, v in _periods) else ""
+    _periods_html = "".join(
+        f'<div style="display:flex;justify-content:space-between;align-items:center;'
+        f'padding:4px 0;border-bottom:.5px solid #f0efe8;font-size:11px;">'
+        f'<span style="color:{"#0b0b0b" if p[0]==_best_period else "#898781"};">{p[0]}</span>'
+        f'<span style="font-weight:{"600" if p[0]==_best_period else "400"};'
+        f'color:{"#2a78d6" if p[0]==_best_period else "#52514e"};">{p[1]:,}</span>'
+        f'</div>'
+        for p in _periods
+    )
     hourly_svg = (
         f'<svg viewBox="0 0 {_total_w} {_chart_h}" width="100%" height="{_chart_h}" '
+        f'preserveAspectRatio="none" '
         f'xmlns="http://www.w3.org/2000/svg" style="display:block;margin-top:10px;">'
         f'{_bars_svg}'
         f'</svg>'
-        f'<div style="display:flex;justify-content:space-between;font-size:9px;color:#b0afa8;margin-top:2px;">'
+        f'<div style="display:flex;justify-content:space-between;font-size:9px;color:#b0afa8;margin-top:2px;margin-bottom:10px;">'
         f'<span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>'
+        f'{_periods_html}'
     )
 
     # ── Топ страны ───────────────────────────────────────────────────────
