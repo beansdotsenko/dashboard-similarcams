@@ -1151,6 +1151,45 @@
         "CTR растёт — масштабировать"
       ],
       "note": ""
+    },
+    {
+      "date": "2026-09-08",
+      "metrics": {
+        "visitors": 4891,
+        "new_users": 4192,
+        "ret_users": 699,
+        "new_pct": 85.7,
+        "sessions": 6221,
+        "pps": 2.08,
+        "ctr": 10.5,
+        "cr_events": 847,
+        "cr_unique": 513,
+        "reco_shown": 1540,
+        "reco_dism": 778,
+        "reco_all": 14,
+        "reco_provcl": 22,
+        "reco_model_cl": 154,
+        "reco_cr": 10,
+        "vis_7d": 33392,
+        "vis_30d": 140119,
+        "cr_30d": 26891,
+        "ctr_30d_avg": 10.4,
+        "peak_vis": 4998
+      },
+      "findings": [
+        "Трафик +6% WoW",
+        "У пика: 98% от макс.",
+        "CTR 10.5% — в норме"
+      ],
+      "details": [
+        "Последние 7 дней: 33,392 посет. — рост 5.6% WoW. Предыдущая семидневка: 31,632.",
+        "Вчера 4,891 — лишь 2% ниже 30д-пика 4,998 (25/8).",
+        "30д среднее: 10.4%. Конверсия в клик стабильна."
+      ],
+      "hypos": [
+        "CTR растёт — масштабировать"
+      ],
+      "note": ""
     }
   ],
   "pinned": [],
@@ -1795,6 +1834,58 @@
         "country": "CA",
         "vis": 47,
         "pct": 1.0
+      }
+    ],
+    "2026-09-08": [
+      {
+        "country": "US",
+        "vis": 705,
+        "pct": 14.4
+      },
+      {
+        "country": "IN",
+        "vis": 222,
+        "pct": 4.5
+      },
+      {
+        "country": "DE",
+        "vis": 113,
+        "pct": 2.3
+      },
+      {
+        "country": "RU",
+        "vis": 61,
+        "pct": 1.2
+      },
+      {
+        "country": "UA",
+        "vis": 58,
+        "pct": 1.2
+      },
+      {
+        "country": "BR",
+        "vis": 47,
+        "pct": 1.0
+      },
+      {
+        "country": "CO",
+        "vis": 45,
+        "pct": 0.9
+      },
+      {
+        "country": "NL",
+        "vis": 43,
+        "pct": 0.9
+      },
+      {
+        "country": "ES",
+        "vis": 37,
+        "pct": 0.8
+      },
+      {
+        "country": "FR",
+        "vis": 35,
+        "pct": 0.7
       }
     ]
   },
@@ -6450,6 +6541,188 @@
         "profile_vis": 0,
         "stats_vis": 0
       }
+    ],
+    "2026-09-08": [
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "amylaaa",
+        "base": "/cams/female/stripchat/amylaaa",
+        "vis": 120,
+        "profile_vis": 174,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "chaturbate",
+        "model": "keylamanning",
+        "base": "/cams/female/chaturbate/keylamanning",
+        "vis": 14,
+        "profile_vis": 9,
+        "stats_vis": 10
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "Madison_Flame",
+        "base": "/cams/female/stripchat/Madison_Flame",
+        "vis": 28,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "omg-lovebirds",
+        "base": "/cams/couple/stripchat/omg-lovebirds",
+        "vis": 5,
+        "profile_vis": 14,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "vanika2000",
+        "base": "/cams/female/stripchat/vanika2000",
+        "vis": 17,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "Little-Roshni",
+        "base": "/cams/female/stripchat/Little-Roshni",
+        "vis": 14,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "izzabelsun",
+        "base": "/cams/female/stripchat/izzabelsun",
+        "vis": 12,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "Couple_from_Heaven",
+        "base": "/cams/couple/stripchat/Couple_from_Heaven",
+        "vis": 10,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "roouse",
+        "base": "/cams/female/stripchat/roouse",
+        "vis": 8,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "Curvy_Sakhi",
+        "base": "/cams/couple/stripchat/Curvy_Sakhi",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "venusandzeus@xh",
+        "base": "/cams/couple/stripchat/venusandzeus@xh",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "young_love6",
+        "base": "/cams/couple/stripchat/young_love6",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "chaturbate",
+        "model": "alikaful",
+        "base": "/cams/female/chaturbate/alikaful",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "Estee_Lavina",
+        "base": "/cams/female/stripchat/Estee_Lavina",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "horny_sanjana",
+        "base": "/cams/female/stripchat/horny_sanjana",
+        "vis": 7,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "Sexy_vanshika01",
+        "base": "/cams/couple/stripchat/Sexy_vanshika01",
+        "vis": 6,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "couple",
+        "platform": "stripchat",
+        "model": "Unmarried_Couple1",
+        "base": "/cams/couple/stripchat/Unmarried_Couple1",
+        "vis": 6,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "rayal_bhabi",
+        "base": "/cams/female/stripchat/rayal_bhabi",
+        "vis": 6,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "sharifha",
+        "base": "/cams/female/stripchat/sharifha",
+        "vis": 6,
+        "profile_vis": 0,
+        "stats_vis": 0
+      },
+      {
+        "gender": "female",
+        "platform": "stripchat",
+        "model": "tanisha_silky",
+        "base": "/cams/female/stripchat/tanisha_silky",
+        "vis": 6,
+        "profile_vis": 0,
+        "stats_vis": 0
+      }
     ]
   },
   "shorts_rankings": {
@@ -8577,6 +8850,73 @@
       {
         "gender": "female",
         "model": "nyala2007",
+        "vis": 5
+      }
+    ],
+    "2026-09-08": [
+      {
+        "gender": "couple",
+        "model": "bni112",
+        "vis": 14
+      },
+      {
+        "gender": "female",
+        "model": "orla94",
+        "vis": 8
+      },
+      {
+        "gender": "female",
+        "model": "mami_inkked",
+        "vis": 8
+      },
+      {
+        "gender": "couple",
+        "model": "MasonxHer",
+        "vis": 6
+      },
+      {
+        "gender": "female",
+        "model": "alise8881",
+        "vis": 6
+      },
+      {
+        "gender": "couple",
+        "model": "yyydgda",
+        "vis": 6
+      },
+      {
+        "gender": "female",
+        "model": "malinamaxx",
+        "vis": 6
+      },
+      {
+        "gender": "female",
+        "model": "roouse",
+        "vis": 6
+      },
+      {
+        "gender": "couple",
+        "model": "secretgirls2026",
+        "vis": 5
+      },
+      {
+        "gender": "female",
+        "model": "anikasex",
+        "vis": 5
+      },
+      {
+        "gender": "female",
+        "model": "barbika19",
+        "vis": 5
+      },
+      {
+        "gender": "female",
+        "model": "isabella_horney_",
+        "vis": 5
+      },
+      {
+        "gender": "female",
+        "model": "nancy_chancy",
         "vis": 5
       }
     ]
