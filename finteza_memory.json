@@ -1408,6 +1408,37 @@
       "note": ""
     },
     {
+      "date": "2026-09-15",
+      "metrics": {
+        "visitors": 5436,
+        "new_users": 4326,
+        "ret_users": 1110,
+        "new_pct": 79.6,
+        "sessions": 6290,
+        "pps": 1.95,
+        "ctr": 10.4,
+        "cr_events": 883,
+        "cr_unique": 566,
+        "reco_shown": 1444,
+        "reco_dism": 702,
+        "reco_all": 16,
+        "reco_provcl": 32,
+        "reco_model_cl": 88,
+        "reco_cr": 6.1,
+        "vis_7d": 31801,
+        "vis_30d": 137409,
+        "cr_30d": 0,
+        "ctr_30d_avg": 0.0,
+        "peak_vis": 5436
+      },
+      "findings": [
+        "Данные восстановлены из CSV"
+      ],
+      "details": [],
+      "hypos": [],
+      "note": "restored from CSV export"
+    },
+    {
       "date": "2026-09-16",
       "metrics": {
         "visitors": 13699,
@@ -1426,7 +1457,7 @@
         "reco_model_cl": 166,
         "reco_cr": 18,
         "vis_7d": 40730,
-        "vis_30d": 146817,
+        "vis_30d": 146832,
         "cr_30d": 28146,
         "ctr_30d_avg": 10.5,
         "peak_vis": 4998
@@ -2462,12 +2493,12 @@
     "2026-09-16": [
       {
         "country": "US",
-        "vis": 637,
-        "pct": 4.6
+        "vis": 642,
+        "pct": 4.7
       },
       {
         "country": "IN",
-        "vis": 259,
+        "vis": 260,
         "pct": 1.9
       },
       {
@@ -2487,7 +2518,7 @@
       },
       {
         "country": "FR",
-        "vis": 59,
+        "vis": 60,
         "pct": 0.4
       },
       {
