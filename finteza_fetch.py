@@ -34,9 +34,9 @@ _COOKIE_ENV = os.environ.get("FINTEZA_COOKIE", "")
 COOKIES = {
     "_fz_uniq": "6387735736774797247",
     "_fz_fvdt": "1781282239",
-    "LLT":      "ugpchncymcozadumqrydibolczulotd",
+    "LLT":      "uclcsijpfhiowokluyrwkpzyuwjhbjp",
     "lang":     "ru",
-    "_fz_ssn":  "1789628148055322257",
+    "_fz_ssn":  "1790321793815684201",
 }
 
 # ── ФИЛЬТРЫ — настрой под себя ──────────────────────────────────────────
