@@ -1800,8 +1800,8 @@
         "reco_model_cl": 200,
         "reco_cr": 17,
         "vis_7d": 33539,
-        "vis_30d": 150967,
-        "cr_30d": 28670,
+        "vis_30d": 151430,
+        "cr_30d": 28743,
         "ctr_30d_avg": 10.5,
         "peak_vis": 5125
       },
@@ -3082,53 +3082,53 @@
     "2026-09-26": [
       {
         "country": "US",
-        "vis": 643,
-        "pct": 12.7
+        "vis": 745,
+        "pct": 14.7
       },
       {
         "country": "IN",
-        "vis": 398,
-        "pct": 7.8
+        "vis": 523,
+        "pct": 10.3
       },
       {
         "country": "DE",
-        "vis": 128,
-        "pct": 2.5
+        "vis": 159,
+        "pct": 3.1
       },
       {
         "country": "NL",
-        "vis": 73,
-        "pct": 1.4
+        "vis": 87,
+        "pct": 1.7
       },
       {
         "country": "JP",
-        "vis": 70,
-        "pct": 1.4
+        "vis": 83,
+        "pct": 1.6
       },
       {
         "country": "UA",
-        "vis": 61,
-        "pct": 1.2
+        "vis": 76,
+        "pct": 1.5
       },
       {
         "country": "FR",
-        "vis": 53,
-        "pct": 1.0
+        "vis": 75,
+        "pct": 1.5
       },
       {
         "country": "IT",
-        "vis": 48,
-        "pct": 0.9
+        "vis": 56,
+        "pct": 1.1
       },
       {
         "country": "GB",
-        "vis": 41,
-        "pct": 0.8
+        "vis": 54,
+        "pct": 1.1
       },
       {
-        "country": "TW",
-        "vis": 41,
-        "pct": 0.8
+        "country": "CO",
+        "vis": 53,
+        "pct": 1.0
       }
     ]
   },
