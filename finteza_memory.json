@@ -3009,62 +3009,49 @@
         "CTR снижается — проверить виджеты"
       ],
       "note": ""
+    },
+    {
+      "date": "2026-10-29",
+      "metrics": {
+        "visitors": 2189,
+        "new_users": 1796,
+        "ret_users": 393,
+        "new_pct": 82.0,
+        "sessions": 2744,
+        "pps": 2.1,
+        "ctr": 30.5,
+        "cr_events": 1166,
+        "cr_unique": 668,
+        "reco_shown": 0,
+        "reco_dism": 0,
+        "reco_all": 0,
+        "reco_provcl": 0,
+        "reco_model_cl": 0,
+        "reco_cr": 0,
+        "vis_7d": 39148,
+        "vis_30d": 134423,
+        "cr_30d": 23700,
+        "ctr_30d_avg": 10.2,
+        "peak_vis": 7121
+      },
+      "findings": [
+        "Трафик -3% WoW",
+        "У пика: 31% от макс.",
+        "CTR 30.5% — выше нормы"
+      ],
+      "details": [
+        "WoW изменение -3.2%. Средний день за 30д (без аномалий): 5,170 посет.",
+        "Вчера 2,189 посет. — на 69% ниже 30д-пика 7,121 (22/10).",
+        "30д среднее: 10.2%. Вчера ClickRef: 1,166 events, 668 уникальных пользователей."
+      ],
+      "hypos": [
+        "CTR снижается — проверить виджеты"
+      ],
+      "note": ""
     }
   ],
   "pinned": [],
   "country_daily": {
-    "2026-09-29": [
-      {
-        "country": "US",
-        "vis": 983,
-        "pct": 20.7
-      },
-      {
-        "country": "IN",
-        "vis": 411,
-        "pct": 8.7
-      },
-      {
-        "country": "DE",
-        "vis": 134,
-        "pct": 2.8
-      },
-      {
-        "country": "FR",
-        "vis": 83,
-        "pct": 1.7
-      },
-      {
-        "country": "NL",
-        "vis": 78,
-        "pct": 1.6
-      },
-      {
-        "country": "UA",
-        "vis": 76,
-        "pct": 1.6
-      },
-      {
-        "country": "JP",
-        "vis": 75,
-        "pct": 1.6
-      },
-      {
-        "country": "GB",
-        "vis": 58,
-        "pct": 1.2
-      },
-      {
-        "country": "ES",
-        "vis": 54,
-        "pct": 1.1
-      },
-      {
-        "country": "IT",
-        "vis": 54,
-        "pct": 1.1
-      }
-    ],
     "2026-09-30": [
       {
         "country": "US",
@@ -4317,191 +4304,10 @@
     "2026-10-25": [],
     "2026-10-26": [],
     "2026-10-27": [],
-    "2026-10-28": []
+    "2026-10-28": [],
+    "2026-10-29": []
   },
   "model_rankings": {
-    "2026-09-29": [
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "amylaaa",
-        "base": "/cams/female/stripchat/amylaaa",
-        "vis": 50,
-        "profile_vis": 65,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "badbaby187",
-        "base": "/cams/female/stripchat/badbaby187",
-        "vis": 14,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "Madison_Flame",
-        "base": "/cams/female/stripchat/Madison_Flame",
-        "vis": 13,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "couple",
-        "platform": "stripchat",
-        "model": "New_desi_bhabhi",
-        "base": "/cams/couple/stripchat/New_desi_bhabhi",
-        "vis": 12,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "chaturbate",
-        "model": "amelialilyx",
-        "base": "/cams/female/chaturbate/amelialilyx",
-        "vis": 12,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "lunagirl13",
-        "base": "/cams/female/stripchat/lunagirl13",
-        "vis": 12,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "couple",
-        "platform": "stripchat",
-        "model": "Unmarried_Couple1",
-        "base": "/cams/couple/stripchat/Unmarried_Couple1",
-        "vis": 11,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "mommygambit",
-        "base": "/cams/female/stripchat/mommygambit",
-        "vis": 11,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "chaturbate",
-        "model": "angelmg1",
-        "base": "/cams/female/chaturbate/angelmg1",
-        "vis": 4,
-        "profile_vis": 7,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "daisl166",
-        "base": "/cams/female/stripchat/daisl166",
-        "vis": 4,
-        "profile_vis": 0,
-        "stats_vis": 6
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "MommyGambit",
-        "base": "/cams/female/stripchat/MommyGambit",
-        "vis": 5,
-        "profile_vis": 0,
-        "stats_vis": 4
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "ki-sexy61",
-        "base": "/cams/female/stripchat/ki-sexy61",
-        "vis": 8,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "couple",
-        "platform": "stripchat",
-        "model": "Groupshow063",
-        "base": "/cams/couple/stripchat/Groupshow063",
-        "vis": 7,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "Cute-Simmi69",
-        "base": "/cams/female/stripchat/Cute-Simmi69",
-        "vis": 7,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "Minamina2",
-        "base": "/cams/female/stripchat/Minamina2",
-        "vis": 7,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "vanika2000",
-        "base": "/cams/female/stripchat/vanika2000",
-        "vis": 7,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "chaturbate",
-        "model": "ava_malaikaa",
-        "base": "/cams/female/chaturbate/ava_malaikaa",
-        "vis": 6,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "Disha_22_",
-        "base": "/cams/female/stripchat/Disha_22_",
-        "vis": 6,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "MrsRobinsonnn",
-        "base": "/cams/female/stripchat/MrsRobinsonnn",
-        "vis": 6,
-        "profile_vis": 0,
-        "stats_vis": 0
-      },
-      {
-        "gender": "female",
-        "platform": "stripchat",
-        "model": "horny_sanjana",
-        "base": "/cams/female/stripchat/horny_sanjana",
-        "vis": 6,
-        "profile_vis": 0,
-        "stats_vis": 0
-      }
-    ],
     "2026-09-30": [
       {
         "gender": "female",
@@ -9055,41 +8861,10 @@
     "2026-10-25": [],
     "2026-10-26": [],
     "2026-10-27": [],
-    "2026-10-28": []
+    "2026-10-28": [],
+    "2026-10-29": []
   },
   "shorts_rankings": {
-    "2026-09-29": [
-      {
-        "gender": "female",
-        "model": "callmewawa",
-        "vis": 33
-      },
-      {
-        "gender": "couple",
-        "model": "Madhosh_Mona",
-        "vis": 12
-      },
-      {
-        "gender": "female",
-        "model": "amylaaa",
-        "vis": 9
-      },
-      {
-        "gender": "female",
-        "model": "fordearse",
-        "vis": 5
-      },
-      {
-        "gender": "female",
-        "model": "xiaomaomi0123",
-        "vis": 5
-      },
-      {
-        "gender": "female",
-        "model": "nancy_chancy",
-        "vis": 5
-      }
-    ],
     "2026-09-30": [
       {
         "gender": "female",
@@ -9913,6 +9688,7 @@
     "2026-10-25": [],
     "2026-10-26": [],
     "2026-10-27": [],
-    "2026-10-28": []
+    "2026-10-28": [],
+    "2026-10-29": []
   }
 }
