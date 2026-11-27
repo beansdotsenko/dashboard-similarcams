@@ -1,0 +1,97 @@
+{
+  "updated_at": "2026-11-27T08:48:30+00:00",
+  "yesterday": {
+    "from": "2026-11-26",
+    "to": "2026-11-26",
+    "all": {
+      "shown": 2,
+      "dism": 1,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "online": {
+      "shown": 0,
+      "dism": 0,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "offline": {
+      "shown": 2,
+      "dism": 1,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "prev": {
+      "shown": 0,
+      "dism": 0,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "brands": [],
+    "brands_model": [],
+    "reasons": [],
+    "ab": {
+      "b": {
+        "shown": 2
+      },
+      "<nil>": {
+        "dism": 1
+      }
+    }
+  },
+  "week": {
+    "from": "2026-11-20",
+    "to": "2026-11-26",
+    "all": {
+      "shown": 2,
+      "dism": 1,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "online": {
+      "shown": 0,
+      "dism": 0,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "offline": {
+      "shown": 2,
+      "dism": 1,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "prev": {
+      "shown": 0,
+      "dism": 0,
+      "suppr": 0,
+      "all": 0,
+      "prov": 0,
+      "model": 0
+    },
+    "brands": [],
+    "brands_model": [],
+    "reasons": [],
+    "ab": {
+      "b": {
+        "shown": 2
+      },
+      "<nil>": {
+        "dism": 1
+      }
+    }
+  }
+}
