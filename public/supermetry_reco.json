@@ -1,30 +1,30 @@
 {
-  "updated_at": "2026-11-27T12:12:43+00:00",
+  "updated_at": "2026-11-27T12:20:02+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 3035,
-      "dism": 1052,
-      "suppr": 7235,
+      "shown": 3052,
+      "dism": 1059,
+      "suppr": 7310,
       "all": 20,
-      "prov": 64,
-      "model": 174
+      "prov": 65,
+      "model": 175
     },
     "online": {
-      "shown": 955,
-      "dism": 403,
-      "suppr": 6350,
+      "shown": 962,
+      "dism": 406,
+      "suppr": 6420,
       "all": 0,
       "prov": 24,
-      "model": 76
+      "model": 77
     },
     "offline": {
-      "shown": 2080,
-      "dism": 649,
-      "suppr": 885,
+      "shown": 2090,
+      "dism": 653,
+      "suppr": 890,
       "all": 0,
-      "prov": 40,
+      "prov": 41,
       "model": 98
     },
     "prev": {
@@ -38,7 +38,7 @@
     "brands": [
       [
         "camsoda",
-        29
+        30
       ],
       [
         "streamate",
@@ -76,17 +76,17 @@
       ],
       [
         "chaturbate",
-        23
+        24
       ]
     ],
     "reasons": [
       [
         "session_cap",
-        4439
+        4485
       ],
       [
         "min_gap",
-        2457
+        2476
       ],
       [
         "converted",
@@ -98,20 +98,20 @@
       ],
       [
         "weekly_cap",
-        68
+        78
       ]
     ],
     "ab": {
       "b": {
-        "shown": 1525
+        "shown": 1534
       },
       "a": {
-        "shown": 1510
+        "shown": 1518
       },
       "<nil>": {
-        "model": 174,
-        "prov": 64,
-        "dism": 1052
+        "model": 175,
+        "prov": 65,
+        "dism": 1059
       }
     }
   },
