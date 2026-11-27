@@ -1,0 +1,47 @@
+name: Refresh dashboard
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # 07:00 UTC = 10:00 Moscow каждый день
+  workflow_dispatch:       # ручной запуск через кнопку в GitHub
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard-push
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SUPERMETRY_URL: ${{ secrets.SUPERMETRY_URL }}
+      SUPERMETRY_KEY: ${{ secrets.SUPERMETRY_KEY }}
+      SUPERMETRY_SITE_ID: ${{ secrets.SUPERMETRY_SITE_ID }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Main dashboard (index.html)
+        run: python supermetry_dashboard.py
+
+      - name: RecoDrawer (reco.html)
+        run: python supermetry_fetch.py
+
+      - name: Today (today.html)
+        run: python supermetry_today.py
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/ supermetry_memory.json dashboard_memory.json
+          git diff --staged --quiet && exit 0
+          git commit -m "chore: daily refresh $(date -u '+%Y-%m-%d')"
+          git pull --rebase origin main
+          git push

@@ -534,7 +534,7 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
 @media(max-width:640px){{.g5,.g3{{grid-template-columns:1fr 1fr;}}.g2{{grid-template-columns:1fr;}}}}
 </style>{gate}</head><body>
 <div class="hdr"><h1>similarcams.com <span style="font-weight:400;color:#898781;">(Supermetry)</span></h1>
-<span class="meta">обновлено: {updated} · <a href="reco.html">RecoDrawer →</a></span></div>
+<span class="meta">обновлено: {updated} · <a href="today.html">Сегодня →</a> · <a href="reco.html">RecoDrawer →</a></span></div>
 
 <div class="sec">Вчера — {yl} · последний полный день</div>
 <div class="g5">{kpis}</div>

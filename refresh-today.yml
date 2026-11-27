@@ -1,0 +1,41 @@
+name: Refresh today
+
+on:
+  schedule:
+    - cron: '5 * * * *'   # каждый час в :05
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dashboard-push    # не пушить одновременно с дневным обновлением
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SUPERMETRY_URL: ${{ secrets.SUPERMETRY_URL }}
+      SUPERMETRY_KEY: ${{ secrets.SUPERMETRY_KEY }}
+      SUPERMETRY_SITE_ID: ${{ secrets.SUPERMETRY_SITE_ID }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Today (today.html)
+        run: python supermetry_today.py
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/today.html
+          git diff --staged --quiet && exit 0
+          git commit -m "chore: today refresh $(date -u '+%Y-%m-%d %H:%M')"
+          git pull --rebase origin main
+          git push
