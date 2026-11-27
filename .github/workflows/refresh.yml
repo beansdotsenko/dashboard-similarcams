@@ -11,6 +11,11 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SUPERMETRY_URL: ${{ secrets.SUPERMETRY_URL }}
+      SUPERMETRY_KEY: ${{ secrets.SUPERMETRY_KEY }}
+      SUPERMETRY_SITE_ID: ${{ secrets.SUPERMETRY_SITE_ID }}
+      DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -18,23 +23,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Fetch Supermetry
-        run: python supermetry_fetch.py
-        env:
-          SUPERMETRY_URL: ${{ secrets.SUPERMETRY_URL }}
-          SUPERMETRY_KEY: ${{ secrets.SUPERMETRY_KEY }}
-          SUPERMETRY_SITE_ID: ${{ secrets.SUPERMETRY_SITE_ID }}
+      - name: Main dashboard (index.html)
+        run: python supermetry_dashboard.py
 
-      - name: Generate dashboard
-        continue-on-error: true   # Finteza не должна ломать обновление Supermetry
-        run: python finteza_fetch.py
-        env:
-          FINTEZA_COOKIE: ${{ secrets.FINTEZA_COOKIE }}
+      - name: RecoDrawer (reco.html)
+        run: python supermetry_fetch.py
 
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/ finteza_memory.json
+          git add public/ supermetry_memory.json dashboard_memory.json
           git diff --staged --quiet || git commit -m "chore: daily refresh $(date -u '+%Y-%m-%d')"
           git push
