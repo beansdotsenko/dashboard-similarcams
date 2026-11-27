@@ -1,0 +1,45 @@
+{
+ "days": {
+  "2026-11-26": {
+   "visitors": 2,
+   "visits": 5,
+   "pps": 1.2,
+   "bounce": 0.0,
+   "ctr": 50.0,
+   "cr_events": 1,
+   "cr_unique": 1,
+   "reco_shown": 2,
+   "note": ""
+  }
+ },
+ "model_rankings": {
+  "2026-11-26": [
+   {
+    "gender": "female",
+    "platform": "stripchat",
+    "model": "Emely_Moon",
+    "vis": 1,
+    "profile_vis": 1,
+    "stats_vis": 0
+   }
+  ]
+ },
+ "shorts_rankings": {
+  "2026-11-26": []
+ },
+ "country_daily": {
+  "2026-11-26": [
+   {
+    "country": "LV",
+    "vis": 1,
+    "pct": 50.0
+   },
+   {
+    "country": "PL",
+    "vis": 1,
+    "pct": 50.0
+   }
+  ]
+ },
+ "pinned": []
+}
