@@ -1,31 +1,31 @@
 {
-  "updated_at": "2026-11-27T12:29:39+00:00",
+  "updated_at": "2026-11-27T20:54:43+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 3077,
-      "dism": 1069,
-      "suppr": 7390,
-      "all": 20,
-      "prov": 65,
-      "model": 177
+      "shown": 4796,
+      "dism": 1746,
+      "suppr": 11686,
+      "all": 37,
+      "prov": 106,
+      "model": 300
     },
     "online": {
-      "shown": 972,
-      "dism": 409,
-      "suppr": 6496,
+      "shown": 1555,
+      "dism": 680,
+      "suppr": 10333,
       "all": 0,
-      "prov": 24,
-      "model": 78
+      "prov": 33,
+      "model": 129
     },
     "offline": {
-      "shown": 2105,
-      "dism": 660,
-      "suppr": 894,
+      "shown": 3241,
+      "dism": 1066,
+      "suppr": 1353,
       "all": 0,
-      "prov": 41,
-      "model": 99
+      "prov": 73,
+      "model": 171
     },
     "prev": {
       "shown": 2,
@@ -38,19 +38,23 @@
     "brands": [
       [
         "camsoda",
-        30
-      ],
-      [
-        "streamate",
-        14
+        48
       ],
       [
         "bongacams",
-        13
+        28
+      ],
+      [
+        "streamate",
+        16
       ],
       [
         "stripchat",
-        7
+        12
+      ],
+      [
+        "chaturbate",
+        1
       ],
       [
         "livejasmin",
@@ -60,58 +64,58 @@
     "brands_model": [
       [
         "bongacams",
-        49
+        83
       ],
       [
         "stripchat",
-        44
+        69
       ],
       [
         "camsoda",
-        30
-      ],
-      [
-        "streamate",
-        30
+        60
       ],
       [
         "chaturbate",
-        24
+        48
+      ],
+      [
+        "streamate",
+        40
       ]
     ],
     "reasons": [
       [
         "session_cap",
-        4547
+        7160
       ],
       [
         "min_gap",
-        2485
-      ],
-      [
-        "converted",
-        154
-      ],
-      [
-        "quick_dismiss",
-        118
+        3727
       ],
       [
         "weekly_cap",
-        86
+        302
+      ],
+      [
+        "converted",
+        263
+      ],
+      [
+        "quick_dismiss",
+        234
       ]
     ],
     "ab": {
       "b": {
-        "shown": 1545
+        "shown": 2405
       },
       "a": {
-        "shown": 1532
+        "shown": 2391
       },
       "<nil>": {
-        "model": 177,
-        "prov": 65,
-        "dism": 1069
+        "model": 300,
+        "prov": 106,
+        "dism": 1746
       }
     }
   },
