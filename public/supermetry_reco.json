@@ -1,28 +1,28 @@
 {
-  "updated_at": "2026-11-27T09:02:17+00:00",
+  "updated_at": "2026-11-27T09:05:03+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 2494,
-      "dism": 847,
-      "suppr": 5618,
+      "shown": 2499,
+      "dism": 850,
+      "suppr": 5632,
       "all": 15,
       "prov": 52,
       "model": 145
     },
     "online": {
-      "shown": 770,
-      "dism": 326,
-      "suppr": 4937,
+      "shown": 772,
+      "dism": 328,
+      "suppr": 4949,
       "all": 0,
       "prov": 21,
       "model": 62
     },
     "offline": {
-      "shown": 1724,
-      "dism": 521,
-      "suppr": 681,
+      "shown": 1727,
+      "dism": 522,
+      "suppr": 683,
       "all": 0,
       "prov": 31,
       "model": 83
@@ -82,11 +82,11 @@
     "reasons": [
       [
         "session_cap",
-        3454
+        3465
       ],
       [
         "min_gap",
-        1918
+        1920
       ],
       [
         "converted",
@@ -103,15 +103,15 @@
     ],
     "ab": {
       "b": {
-        "shown": 1257
+        "shown": 1261
       },
       "a": {
-        "shown": 1237
+        "shown": 1239
       },
       "<nil>": {
         "model": 145,
         "prov": 52,
-        "dism": 847
+        "dism": 850
       }
     }
   },
