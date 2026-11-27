@@ -84,15 +84,21 @@ def breakdown(dimension, filters, d_from, d_to, metrics=("events", "visits")):
     return out
 
 
+RCR = ["event:is:provider_clicked", "prop:surface:is:provider_recommendation_drawer"]   # = Finteza RecoClickRef
+
+
 def ev_counts(d_from, d_to, extra=()):
-    """{key: events} for the six drawer events."""
+    """{key: events} for the six drawer events + rcr (outbound affiliate click from the drawer)."""
     m = breakdown("event", ["event:contains:reco_drawer", *extra], d_from, d_to)
-    return {k: m.get(name, {}).get("events", 0) for k, name in EV.items()}
+    out = {k: m.get(name, {}).get("events", 0) for k, name in EV.items()}
+    r = breakdown("event", [*RCR, *extra], d_from, d_to)
+    out["rcr"] = r.get("provider_clicked", {}).get("events", 0)
+    return out
 
 
 def by_prop(prop, event, d_from, d_to):
     m = breakdown(f"prop:{prop}", [f"event:is:{event}"], d_from, d_to)
-    return sorted(((k, v.get("events", 0)) for k, v in m.items() if k.strip() not in ("", "None", "null", "(none)")), key=lambda x: -x[1])
+    return sorted(((k, v.get("events", 0)) for k, v in m.items() if k.strip() not in ("", "None", "null", "(none)", "<nil>")), key=lambda x: -x[1])
 
 
 def period_block(d_from, d_to, prev_from, prev_to):
@@ -103,13 +109,16 @@ def period_block(d_from, d_to, prev_from, prev_to):
     brands = by_prop("provider_slug", EV["prov"], d_from, d_to) or by_prop("provider", EV["prov"], d_from, d_to)
     brands_model = by_prop("provider_slug", EV["model"], d_from, d_to) or by_prop("provider", EV["model"], d_from, d_to)
     reasons = by_prop("reason", EV["suppr"], d_from, d_to)
+    m = breakdown("prop:provider_slug", RCR, d_from, d_to)
+    brands_rcr = sorted(((k, v.get("events", 0)) for k, v in m.items()
+                         if k.strip() not in ("", "None", "null", "<nil>")), key=lambda x: -x[1])
     ab = {}
     for k in ("shown", "model", "prov", "dism"):
         for bucket, n in by_prop("ab_bucket", EV[k], d_from, d_to):
             ab.setdefault(bucket, {})[k] = n
     return {"from": d_from.isoformat(), "to": d_to.isoformat(), "all": allc, "online": on,
             "offline": off, "prev": prev, "brands": brands, "brands_model": brands_model,
-            "reasons": reasons, "ab": ab}
+            "reasons": reasons, "ab": ab, "brands_rcr": brands_rcr}
 
 
 # ── memory ───────────────────────────────────────────────────────────────
@@ -126,7 +135,7 @@ def update_memory(mem, today):
     for i in range(1, 31):
         d = today - timedelta(days=i)
         iso = d.isoformat()
-        if iso in mem["days"] and i > 2:   # always refresh the last 2 days
+        if iso in mem["days"] and "rcr" in mem["days"][iso] and i > 2:   # always refresh the last 2 days
             continue
         mem["days"][iso] = ev_counts(d, d)
     keep = sorted(mem["days"])[-90:]
@@ -188,6 +197,7 @@ def reco_card(title, blk):
   <div class="num-sm">{a["shown"]:,}</div>
   <div class="delta" style="color:{d_col};">{d_lbl} <span style="color:#898781;font-weight:400;">к пред. периоду ({prev["shown"]:,})</span></div>
   <div class="sub">dismissed: {a["dism"]:,} ({pct(a["dism"], a["shown"])}%) · all clicked: {a["all"]:,} ({pct(a["all"], a["shown"])}%)</div>
+  <div class="sub">💰 RecoClickRef: <b style="color:#eda100;">{a["rcr"]:,}</b> ({pct(a["rcr"], a["shown"])}% от shown · {pct(a["rcr"], a["prov"])}% от Watch on)</div>
   <div style="margin-top:8px;border-top:1px solid #eeeee8;padding-top:7px;">
     <table style="width:100%;border-collapse:collapse;font-size:11px;">
       <thead><tr>
@@ -199,8 +209,9 @@ def reco_card(title, blk):
         {row("shown", "shown", bold=True)}
         {row("dism", "dism", rate=True)}
         {row("suppr", "suppr")}
-        {row("🌐 provider", "prov", rate=True, bold=True)}
+        {row("▶ Watch on", "prov", rate=True, bold=True)}
         {row("👤 модель", "model", rate=True, bold=True)}
+        {row("💰 RecoClickRef", "rcr", rate=True, bold=True) if (on["rcr"] + off["rcr"]) else ""}
       </tbody>
     </table>
   </div>
@@ -222,7 +233,7 @@ def ab_table(ab):
     th = 'style="text-align:right;padding:0 6px 4px;color:#898781;font-size:10px;"'
     return (f'<table style="width:100%;border-collapse:collapse;font-size:11px;"><thead><tr>'
             f'<th style="text-align:left;color:#898781;font-size:10px;">вариант</th><th {th}>shown</th><th {th}>модель</th>'
-            f'<th {th}>provider</th><th {th}>dism</th></tr></thead><tbody>{rows}</tbody></table>'
+            f'<th {th}>Watch on</th><th {th}>dism</th></tr></thead><tbody>{rows}</tbody></table>'
             f'<div style="font-size:10px;color:#898781;margin-top:6px;">если у кликов нет свойства ab_bucket, колонки кликов будут 0</div>')
 
 
@@ -242,10 +253,10 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter')__ck();});})(
 
 def write_html(today_blk, yest, week, mem):
     days = sorted(d for d, v in mem["days"].items() if any(v.values()))
-    h = {k: [mem["days"][d].get(k, 0) for d in days] for k in EV}
+    h = {k: [mem["days"][d].get(k, 0) for d in days] for k in list(EV) + ["rcr"]}
     labels = [d[5:] for d in days]
     y = yest["all"]
-    funnel_vals = [y["shown"], y["suppr"], y["dism"], y["all"], y["prov"], y["model"]]
+    funnel_vals = [y["shown"], y["suppr"], y["dism"], y["all"], y["prov"], y["model"], y["rcr"]]
     updated = datetime.now(TZ).strftime("%d.%m.%Y %H:%M МСК")
 
     html = f"""<!DOCTYPE html>
@@ -282,15 +293,22 @@ h1{{font-size:16px;font-weight:600;}} .meta{{font-size:12px;color:#898781;}}
   <div>
     <div class="card"><div class="cl">suppressed — причины вчера ({y["suppr"]:,})</div>
       <div style="padding-top:8px;">{bars(yest["reasons"], "#e24b4a", SUPPR_LABELS)}</div></div>
-    <div class="card"><div class="cl">🌐 клики по провайдеру — вчера ({y["prov"]:,})</div>
+    <div class="card"><div class="cl">▶ Watch on — вчера ({y["prov"]:,})</div>
       <div style="padding-top:8px;">{bars(yest["brands"], "#eda100")}</div></div>
   </div>
 </div>
 
 <div class="g2">
+  <div class="card"><div class="cl">💰 RecoClickRef по брендам — вчера ({y["rcr"]:,} кликов)</div>
+    <div style="padding-top:8px;">{bars(yest["brands_rcr"], "#c27c0e")}</div></div>
+  <div class="card"><div class="cl">💰 RecoClickRef по брендам — 7 дней ({week["all"]["rcr"]:,} кликов)</div>
+    <div style="padding-top:8px;">{bars(week["brands_rcr"], "#c27c0e")}</div></div>
+</div>
+
+<div class="g2">
   <div class="card"><div class="cl">👤 клики по модели по брендам — 7 дней ({week["all"]["model"]:,})</div>
     <div style="padding-top:8px;">{bars(week["brands_model"], "#4a90d9")}</div></div>
-  <div class="card"><div class="cl">🌐 клики по провайдеру по брендам — 7 дней ({week["all"]["prov"]:,})</div>
+  <div class="card"><div class="cl">▶ Watch on по брендам — 7 дней ({week["all"]["prov"]:,})</div>
     <div style="padding-top:8px;">{bars(week["brands"], "#eda100")}</div></div>
 </div>
 
@@ -304,8 +322,9 @@ h1{{font-size:16px;font-weight:600;}} .meta{{font-size:12px;color:#898781;}}
   <div class="cw" style="height:200px;"><canvas id="ch1"></canvas></div></div>
 <div class="card"><div class="cl">Клики из drawer — кол-во (левая) + % от shown (правая, пунктир)</div>
   <div class="leg"><span><span class="dot" style="background:#1baf7a;"></span>all clicked</span>
-  <span><span class="dot" style="background:#eda100;"></span>prov. clicked</span>
-  <span><span class="dot" style="background:#4a90d9;"></span>model clicked</span></div>
+  <span><span class="dot" style="background:#eda100;"></span>Watch on</span>
+  <span><span class="dot" style="background:#4a90d9;"></span>model clicked</span>
+  <span><span class="dot" style="background:#c27c0e;"></span>RecoClickRef</span></div>
   <div class="cw" style="height:200px;"><canvas id="ch2"></canvas></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -315,10 +334,10 @@ const b={{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{display:f
 const xa={{grid:{{display:false}},ticks:{{color:tk,font:{{size:10}},maxTicksLimit:10,maxRotation:0}}}};
 const ya=(mx)=>({{grid:{{color:grd,lineWidth:.5}},ticks:{{color:tk,font:{{size:11}},maxTicksLimit:5}},min:0,max:mx,border:{{display:false}}}});
 const fv={json.dumps(funnel_vals)};
-new Chart(document.getElementById('cf'),{{type:'bar',data:{{labels:['shown','suppressed','dismissed','all clicked','prov. clicked','model clicked'],
-  datasets:[{{data:fv,backgroundColor:['#2a78d6','#888780','#eb6834','#1baf7a','#eda100','#4a90d9'],borderRadius:3}}]}},
+new Chart(document.getElementById('cf'),{{type:'bar',data:{{labels:['shown','suppressed','dismissed','all clicked','Watch on','model clicked','RecoClickRef'],
+  datasets:[{{data:fv,backgroundColor:['#2a78d6','#888780','#eb6834','#1baf7a','#eda100','#4a90d9','#c27c0e'],borderRadius:3}}]}},
   options:{{...b,indexAxis:'y',scales:{{x:ya(Math.max(...fv,1)*1.08),y:{{grid:{{display:false}},ticks:{{color:tk,font:{{size:11}}}}}}}}}}}});
-const L={json.dumps(labels)},S={json.dumps(h["shown"])},D={json.dumps(h["dism"])},A={json.dumps(h["all"])},P={json.dumps(h["prov"])},M={json.dumps(h["model"])};
+const L={json.dumps(labels)},S={json.dumps(h["shown"])},D={json.dumps(h["dism"])},A={json.dumps(h["all"])},P={json.dumps(h["prov"])},M={json.dumps(h["model"])},R={json.dumps(h["rcr"])};
 const pc=a=>a.map((v,i)=>S[i]?Math.round(v/S[i]*1000)/10:0);
 new Chart(document.getElementById('ch1'),{{type:'line',data:{{labels:L,datasets:[
   {{label:'shown',data:S,borderColor:'#2a78d6',backgroundColor:'#2a78d610',fill:true,borderWidth:2,pointRadius:2,tension:.3,yAxisID:'y'}},
@@ -327,12 +346,13 @@ new Chart(document.getElementById('ch1'),{{type:'line',data:{{labels:L,datasets:
   options:{{...b,scales:{{x:xa,y:{{...ya(Math.max(...S,1)*1.1),position:'left'}},y2:{{...ya(100),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',callback:v=>v+'%'}}}}}}}}}});
 new Chart(document.getElementById('ch2'),{{type:'line',data:{{labels:L,datasets:[
   {{label:'all clicked',data:A,borderColor:'#1baf7a',borderWidth:2,pointRadius:2,tension:.3,yAxisID:'y'}},
-  {{label:'prov. clicked',data:P,borderColor:'#eda100',borderWidth:1.5,pointRadius:2,tension:.3,yAxisID:'y'}},
+  {{label:'Watch on',data:P,borderColor:'#eda100',borderWidth:1.5,pointRadius:2,tension:.3,yAxisID:'y'}},
   {{label:'model clicked',data:M,borderColor:'#4a90d9',borderWidth:1.5,pointRadius:2,tension:.3,yAxisID:'y'}},
+  {{label:'RecoClickRef',data:R,borderColor:'#c27c0e',borderWidth:2,pointRadius:2,tension:.3,yAxisID:'y'}},
   {{label:'all %',data:pc(A),borderColor:'#1baf7a',borderDash:[4,3],borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}},
   {{label:'prov %',data:pc(P),borderColor:'#eda100',borderDash:[4,3],borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}},
   {{label:'model %',data:pc(M),borderColor:'#4a90d9',borderDash:[4,3],borderWidth:1,pointRadius:0,tension:.3,yAxisID:'y2'}}]}},
-  options:{{...b,scales:{{x:xa,y:{{...ya(Math.max(...A,...P,...M,1)*1.2),position:'left'}},
+  options:{{...b,scales:{{x:xa,y:{{...ya(Math.max(...A,...P,...M,...R,1)*1.2),position:'left'}},
   y2:{{...ya(Math.ceil(Math.max(...pc(A),...pc(P),...pc(M),1)*1.3)),position:'right',grid:{{display:false}},ticks:{{color:'#c0bfba',callback:v=>v+'%'}}}}}}}}}});
 </script></body></html>"""
     os.makedirs(PUBLIC, exist_ok=True)
@@ -343,7 +363,7 @@ new Chart(document.getElementById('ch2'),{{type:'line',data:{{labels:L,datasets:
 def main():
     today = datetime.now(TZ).date()
     yd = today - timedelta(days=1)
-    print(f"Yesterday {yd}, 7 days {today - timedelta(days=7)}..{yd}")
+    print(f"Today {today}, yesterday {yd}")
 
     today_blk = period_block(today, today, yd, yd)
     yest = period_block(yd, yd, yd - timedelta(days=1), yd - timedelta(days=1))
