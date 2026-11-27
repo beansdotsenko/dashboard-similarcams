@@ -150,6 +150,67 @@ def sparkline(vals, color="#2a78d6", h=22, w=120):
             f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="1.5"/></svg>')
 
 
+def _dpct(cur, prev):
+    """Finteza-style delta: +23%, -48%, +4k%."""
+    if not prev:
+        return ""
+    d = (cur - prev) / prev * 100
+    if abs(d) < 0.5:
+        return ""
+    txt = f"{d / 1000:+.0f}k%" if abs(d) >= 1000 else f"{d:+.0f}%"
+    return f'<span class="dp" style="color:{"#1baf7a" if d > 0 else "#e24b4a"};">{txt}</span>'
+
+
+def pages_table(rows, prev=None, total=0, limit=100, table_id="pages"):
+    """Finteza-like pages table with search and CSV export.
+    rows: breakdown rows with page/visitors/visits/pageviews/events; prev: {page: row} for deltas."""
+    prev = prev or {}
+    rows = sorted((r for r in rows if not str(r["page"]).startswith(EXCLUDE_PAGES)),
+                  key=lambda r: -num(r.get("visitors")))[:limit]
+    total = total or sum(num(r.get("visitors")) for r in rows) or 1
+    body = ""
+    for r in rows:
+        p = str(r["page"])
+        v, vs, pv, ev = (num(r.get(k)) for k in ("visitors", "visits", "pageviews", "events"))
+        q = prev.get(p, {})
+        qv, qvs, qpv, qev = (num(q.get(k)) for k in ("visitors", "visits", "pageviews", "events"))
+        pps, qpps = (pv / vs if vs else 0), (qpv / qvs if qvs else 0)
+        share = v / total * 100
+        body += (f'<tr><td class="pg" title="{p}">{p}</td>'
+                 f'<td class="tdr"><b>{int(v):,}</b>{_dpct(v, qv)}</td>'
+                 f'<td class="tdr"><span class="sh"><span style="width:{min(100, share * 1.6):.0f}%"></span></span>{share:.2f}%</td>'
+                 f'<td class="tdr">{int(ev):,}{_dpct(ev, qev)}</td>'
+                 f'<td class="tdr">{int(vs):,}{_dpct(vs, qvs)}</td>'
+                 f'<td class="tdr">{pps:.2f}{_dpct(pps, qpps)}</td></tr>')
+    return f"""<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;">
+  <input class="srch" placeholder="Поиск по странице…" oninput="filterTable('{table_id}', this.value)">
+  <a href="#" class="csv" onclick="csvTable('{table_id}');return false;">⬇ CSV</a></div>
+<div style="overflow-x:auto;"><table id="{table_id}" class="pt"><thead><tr>
+<th style="text-align:left;">Страница</th><th>Посетители</th><th>%</th><th>События</th><th>Визиты</th><th>Стр/визит</th>
+</tr></thead><tbody>{body}</tbody></table></div>"""
+
+
+PT_CSS = """.pt{min-width:760px;} .pt td{border-bottom:.5px solid #eeeee8;}
+.pt .pg{padding:7px 8px 7px 0;font-size:12px;word-break:break-all;}
+.pt .tdr{font-size:12px;padding:7px 8px;}
+.dp{font-size:10px;margin-left:4px;}
+.sh{display:inline-block;width:56px;height:8px;background:#f0efe8;border-radius:2px;margin-right:6px;vertical-align:middle;overflow:hidden;}
+.sh span{display:block;height:100%;background:#2a78d6;}
+.srch{flex:1;max-width:360px;padding:8px 10px;border:1px solid #d5d4cd;border-radius:6px;font-size:12px;}
+.csv{font-size:12px;text-decoration:none;}"""
+
+PT_JS = r"""
+function filterTable(id,q){q=q.toLowerCase();document.querySelectorAll('#'+id+' tbody tr').forEach(r=>{
+  r.style.display=r.cells[0].textContent.toLowerCase().includes(q)?'':'none';});}
+function csvTable(id){const t=document.getElementById(id);const rows=[...t.rows].filter(r=>r.style.display!=='none');
+  const esc=s=>'"'+s.replace(/"/g,'""')+'"';
+  const lines=rows.map(r=>[...r.cells].map(c=>{const b=c.cloneNode(true);b.querySelectorAll('.dp').forEach(x=>x.remove());
+    return esc(b.textContent.trim());}).join(','));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\n')],{type:'text/csv'}));
+  a.download=id+'.csv';a.click();}
+"""
+
+
 def card(icon, title, text, color):
     return (f'<div class="card" style="border-left:3px solid {color};">'
             f'<div style="display:flex;gap:8px;margin-bottom:5px;"><span style="font-size:14px;">{icon}</span>'
@@ -223,8 +284,8 @@ def main():
             pass
 
     # pages yesterday / day before
-    pages_y = {r["page"]: r for r in breakdown("page", yd, yd, "visitors,visits,pageviews", limit=1000)}
-    pages_p = {r["page"]: r for r in breakdown("page", pb, pb, "visitors,visits,pageviews", limit=1000)}
+    pages_y = {r["page"]: r for r in breakdown("page", yd, yd, "visitors,visits,pageviews,events", limit=1000)}
+    pages_p = {r["page"]: r for r in breakdown("page", pb, pb, "visitors,visits,pageviews,events", limit=1000)}
 
     # 30 days
     ts30 = timeseries(d30_from, yd, "day", "visitors,visits,pageviews")
@@ -408,36 +469,7 @@ def main():
                            f'<span style="font-weight:{600 if p[0] == best else 400};">{p[1]:,}</span></div>' for p in periods)
     peak_html = f"{peak_hr:02d}:00–{(peak_hr + 1) % 24:02d}:00" if peak_hr >= 0 else "—"
 
-    # pages table
-    site_pps = pps_y
-    rows_html = ""
-    top_pages = sorted((r for p, r in pages_y.items() if not p.startswith(EXCLUDE_PAGES)),
-                       key=lambda r: -num(r.get("visitors")))[:20]
-    for i, r in enumerate(top_pages, 1):
-        p = r["page"]
-        v = int(num(r.get("visitors")))
-        pv_vis = num(r.get("visits"))
-        ppv = num(r.get("pageviews")) / pv_vis if pv_vis else 0
-        prev_v = int(num(pages_p.get(p, {}).get("visitors")))
-        dv = delta(v, prev_v)
-        dstr = (f'<span style="color:{"#1baf7a" if dv >= 0 else "#e24b4a"};font-size:10px;margin-left:4px;">{dv:+.0f}%</span>'
-                if dv is not None else "")
-        notes = []
-        if dv is not None and dv >= 15:
-            notes.append(f"↑{dv:+.0f}% к позавчера")
-        if dv is not None and dv <= -15:
-            notes.append(f"↓{dv:.0f}% к позавчера")
-        if ppv >= site_pps + 0.6:
-            notes.append(f"глубина {ppv:.1f} ↑")
-        elif 0 < ppv <= site_pps - 0.4:
-            notes.append(f"глубина {ppv:.1f} ↓")
-        disp = p if len(p) <= 60 else p[:57] + "…"
-        rows_html += (f'<tr style="border-bottom:.5px solid #eeeee8;"><td class="tdn">{i}</td>'
-                      f'<td style="padding:6px 8px;font-size:11px;word-break:break-all;" title="{p}">{disp}</td>'
-                      f'<td class="tdr" style="font-weight:600;">{v:,}{dstr}</td>'
-                      f'<td class="tdr" style="color:#898781;">{round(v / vis_y * 100, 1) if vis_y else 0}%</td>'
-                      f'<td class="tdr" style="color:#898781;">{ppv:.1f}</td>'
-                      f'<td style="padding:6px 0 6px 8px;font-size:11px;color:#52514e;">{" · ".join(notes) or "—"}</td></tr>')
+    pages_html = pages_table(list(pages_y.values()), pages_p, vis_y, 100, "pages")
 
     plat_col = {"stripchat": "#eb6834", "chaturbate": "#1baf7a", "bongacams": "#2a78d6", "camsoda": "#a855f7", "livejasmin": "#e87ba4"}
 
@@ -530,6 +562,7 @@ body{{background:#f1efe8;color:#0b0b0b;padding:20px 24px;max-width:1100px;margin
 .extra{{margin-top:8px;border-top:1px solid #eeeee8;padding-top:7px;font-size:10px;color:#52514e;line-height:1.8;}}
 table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10px;font-weight:700;color:#898781;text-align:right;white-space:nowrap;border-bottom:1.5px solid #d5d4cd;}}
 .tdn{{padding:6px 8px 6px 0;font-size:11px;color:#898781;text-align:right;}} .tdr{{padding:5px 8px;font-size:11px;text-align:right;white-space:nowrap;}}
+{PT_CSS}
 @media(max-width:900px){{.g5{{grid-template-columns:repeat(3,1fr);}}}}
 @media(max-width:640px){{.g5,.g3{{grid-template-columns:1fr 1fr;}}.g2{{grid-template-columns:1fr;}}}}
 </style>{gate}</head><body>
@@ -573,8 +606,8 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
 
 {anomalies_html}
 
-<div class="sec">Топ 20 страниц — {yl} · динамика к позавчера</div>
-<div class="card" style="overflow-x:auto;"><table style="min-width:620px;"><thead><tr><th>#</th><th style="text-align:left;">Страница</th><th>Посет.</th><th>Доля</th><th>Стр/визит</th><th style="text-align:left;">Сигнал</th></tr></thead><tbody>{rows_html}</tbody></table></div>
+<div class="sec">Страницы — {yl} · изменение к позавчера</div>
+<div class="card">{pages_html}</div>
 
 <div class="sec">Топ 50 моделей — {yl}</div>
 <div class="card" style="overflow-x:auto;"><table style="min-width:520px;"><thead><tr><th>#</th><th style="text-align:left;">Модель</th><th style="text-align:left;">Платформа</th><th>stream</th><th>profile</th><th>stats</th><th style="text-align:left;">30 дней</th></tr></thead><tbody>{models_html}</tbody></table>{dropped_html}</div>
@@ -616,6 +649,7 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>const D = {json.dumps(chart_data, ensure_ascii=False)};</script>
 <script>{CHART_JS}</script>
+<script>{PT_JS}</script>
 </body></html>"""
     os.makedirs(PUBLIC, exist_ok=True)
     with open(os.path.join(PUBLIC, "index.html"), "w", encoding="utf-8") as f:
