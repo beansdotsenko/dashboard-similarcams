@@ -1,31 +1,133 @@
 {
-  "updated_at": "2026-11-27T20:54:43+00:00",
+  "updated_at": "2026-11-27T21:50:31+00:00",
   "today": {
+    "from": "2026-11-28",
+    "to": "2026-11-28",
+    "all": {
+      "shown": 152,
+      "dism": 68,
+      "suppr": 458,
+      "all": 0,
+      "prov": 3,
+      "model": 6,
+      "rcr": 0
+    },
+    "online": {
+      "shown": 72,
+      "dism": 38,
+      "suppr": 407,
+      "all": 0,
+      "prov": 1,
+      "model": 2,
+      "rcr": 0
+    },
+    "offline": {
+      "shown": 80,
+      "dism": 31,
+      "suppr": 51,
+      "all": 0,
+      "prov": 2,
+      "model": 4,
+      "rcr": 0
+    },
+    "prev": {
+      "shown": 4824,
+      "dism": 1758,
+      "suppr": 11946,
+      "all": 37,
+      "prov": 107,
+      "model": 302,
+      "rcr": 13
+    },
+    "brands": [
+      [
+        "camsoda",
+        2
+      ],
+      [
+        "bongacams",
+        1
+      ]
+    ],
+    "brands_model": [
+      [
+        "bongacams",
+        3
+      ],
+      [
+        "camsoda",
+        1
+      ],
+      [
+        "streamate",
+        1
+      ],
+      [
+        "stripchat",
+        1
+      ]
+    ],
+    "reasons": [
+      [
+        "session_cap",
+        276
+      ],
+      [
+        "min_gap",
+        134
+      ],
+      [
+        "weekly_cap",
+        22
+      ],
+      [
+        "converted",
+        16
+      ],
+      [
+        "quick_dismiss",
+        11
+      ]
+    ],
+    "ab": {
+      "a": {
+        "shown": 87
+      },
+      "b": {
+        "shown": 66
+      }
+    },
+    "brands_rcr": []
+  },
+  "yesterday": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 4796,
-      "dism": 1746,
-      "suppr": 11686,
+      "shown": 4824,
+      "dism": 1758,
+      "suppr": 11946,
       "all": 37,
-      "prov": 106,
-      "model": 300
+      "prov": 107,
+      "model": 302,
+      "rcr": 13
     },
     "online": {
-      "shown": 1555,
-      "dism": 680,
-      "suppr": 10333,
+      "shown": 1577,
+      "dism": 689,
+      "suppr": 10564,
       "all": 0,
-      "prov": 33,
-      "model": 129
+      "prov": 34,
+      "model": 130,
+      "rcr": 0
     },
     "offline": {
-      "shown": 3241,
-      "dism": 1066,
-      "suppr": 1353,
+      "shown": 3247,
+      "dism": 1069,
+      "suppr": 1382,
       "all": 0,
       "prov": 73,
-      "model": 171
+      "model": 172,
+      "rcr": 0
     },
     "prev": {
       "shown": 2,
@@ -33,12 +135,13 @@
       "suppr": 0,
       "all": 0,
       "prov": 0,
-      "model": 0
+      "model": 0,
+      "rcr": 0
     },
     "brands": [
       [
         "camsoda",
-        48
+        49
       ],
       [
         "bongacams",
@@ -64,7 +167,7 @@
     "brands_model": [
       [
         "bongacams",
-        83
+        84
       ],
       [
         "stripchat",
@@ -80,118 +183,91 @@
       ],
       [
         "streamate",
-        40
+        41
       ]
     ],
     "reasons": [
       [
         "session_cap",
-        7160
+        7282
       ],
       [
         "min_gap",
-        3727
+        3837
       ],
       [
         "weekly_cap",
-        302
+        303
       ],
       [
         "converted",
-        263
+        278
       ],
       [
         "quick_dismiss",
-        234
+        246
       ]
     ],
     "ab": {
       "b": {
-        "shown": 2405
+        "shown": 2414
       },
       "a": {
-        "shown": 2391
-      },
-      "<nil>": {
-        "model": 300,
-        "prov": 106,
-        "dism": 1746
+        "shown": 2410
       }
-    }
-  },
-  "yesterday": {
-    "from": "2026-11-26",
-    "to": "2026-11-26",
-    "all": {
-      "shown": 2,
-      "dism": 1,
-      "suppr": 0,
-      "all": 0,
-      "prov": 0,
-      "model": 0
     },
-    "online": {
-      "shown": 0,
-      "dism": 0,
-      "suppr": 0,
-      "all": 0,
-      "prov": 0,
-      "model": 0
-    },
-    "offline": {
-      "shown": 2,
-      "dism": 1,
-      "suppr": 0,
-      "all": 0,
-      "prov": 0,
-      "model": 0
-    },
-    "prev": {
-      "shown": 0,
-      "dism": 0,
-      "suppr": 0,
-      "all": 0,
-      "prov": 0,
-      "model": 0
-    },
-    "brands": [],
-    "brands_model": [],
-    "reasons": [],
-    "ab": {
-      "b": {
-        "shown": 2
-      },
-      "<nil>": {
-        "dism": 1
-      }
-    }
+    "brands_rcr": [
+      [
+        "stripchat",
+        5
+      ],
+      [
+        "camsoda",
+        3
+      ],
+      [
+        "chaturbate",
+        3
+      ],
+      [
+        "bongacams",
+        1
+      ],
+      [
+        "streamate",
+        1
+      ]
+    ]
   },
   "week": {
-    "from": "2026-11-20",
-    "to": "2026-11-26",
+    "from": "2026-11-21",
+    "to": "2026-11-27",
     "all": {
-      "shown": 2,
-      "dism": 1,
-      "suppr": 0,
-      "all": 0,
-      "prov": 0,
-      "model": 0
+      "shown": 4826,
+      "dism": 1759,
+      "suppr": 11946,
+      "all": 37,
+      "prov": 107,
+      "model": 302,
+      "rcr": 13
     },
     "online": {
-      "shown": 0,
-      "dism": 0,
-      "suppr": 0,
+      "shown": 1577,
+      "dism": 689,
+      "suppr": 10564,
       "all": 0,
-      "prov": 0,
-      "model": 0
+      "prov": 34,
+      "model": 130,
+      "rcr": 0
     },
     "offline": {
-      "shown": 2,
-      "dism": 1,
-      "suppr": 0,
+      "shown": 3249,
+      "dism": 1070,
+      "suppr": 1382,
       "all": 0,
-      "prov": 0,
-      "model": 0
+      "prov": 73,
+      "model": 172,
+      "rcr": 0
     },
     "prev": {
       "shown": 0,
@@ -199,18 +275,108 @@
       "suppr": 0,
       "all": 0,
       "prov": 0,
-      "model": 0
+      "model": 0,
+      "rcr": 0
     },
-    "brands": [],
-    "brands_model": [],
-    "reasons": [],
+    "brands": [
+      [
+        "camsoda",
+        49
+      ],
+      [
+        "bongacams",
+        28
+      ],
+      [
+        "streamate",
+        16
+      ],
+      [
+        "stripchat",
+        12
+      ],
+      [
+        "chaturbate",
+        1
+      ],
+      [
+        "livejasmin",
+        1
+      ]
+    ],
+    "brands_model": [
+      [
+        "bongacams",
+        84
+      ],
+      [
+        "stripchat",
+        69
+      ],
+      [
+        "camsoda",
+        60
+      ],
+      [
+        "chaturbate",
+        48
+      ],
+      [
+        "streamate",
+        41
+      ]
+    ],
+    "reasons": [
+      [
+        "session_cap",
+        7282
+      ],
+      [
+        "min_gap",
+        3837
+      ],
+      [
+        "weekly_cap",
+        303
+      ],
+      [
+        "converted",
+        278
+      ],
+      [
+        "quick_dismiss",
+        246
+      ]
+    ],
     "ab": {
       "b": {
-        "shown": 2
+        "shown": 2416
       },
-      "<nil>": {
-        "dism": 1
+      "a": {
+        "shown": 2410
       }
-    }
+    },
+    "brands_rcr": [
+      [
+        "stripchat",
+        5
+      ],
+      [
+        "camsoda",
+        3
+      ],
+      [
+        "chaturbate",
+        3
+      ],
+      [
+        "bongacams",
+        1
+      ],
+      [
+        "streamate",
+        1
+      ]
+    ]
   }
 }
