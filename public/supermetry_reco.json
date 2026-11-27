@@ -1,31 +1,31 @@
 {
-  "updated_at": "2026-11-27T09:05:03+00:00",
+  "updated_at": "2026-11-27T09:17:30+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 2499,
-      "dism": 850,
-      "suppr": 5632,
+      "shown": 2531,
+      "dism": 862,
+      "suppr": 5714,
       "all": 15,
       "prov": 52,
-      "model": 145
+      "model": 150
     },
     "online": {
-      "shown": 772,
-      "dism": 328,
-      "suppr": 4949,
+      "shown": 784,
+      "dism": 332,
+      "suppr": 5017,
       "all": 0,
       "prov": 21,
-      "model": 62
+      "model": 64
     },
     "offline": {
-      "shown": 1727,
-      "dism": 522,
-      "suppr": 683,
+      "shown": 1747,
+      "dism": 530,
+      "suppr": 697,
       "all": 0,
       "prov": 31,
-      "model": 83
+      "model": 86
     },
     "prev": {
       "shown": 2,
@@ -67,26 +67,26 @@
         38
       ],
       [
-        "streamate",
-        25
+        "camsoda",
+        27
       ],
       [
-        "camsoda",
-        24
+        "streamate",
+        26
       ],
       [
         "chaturbate",
-        18
+        19
       ]
     ],
     "reasons": [
       [
         "session_cap",
-        3465
+        3524
       ],
       [
         "min_gap",
-        1920
+        1943
       ],
       [
         "converted",
@@ -103,15 +103,15 @@
     ],
     "ab": {
       "b": {
-        "shown": 1261
+        "shown": 1275
       },
       "a": {
-        "shown": 1239
+        "shown": 1256
       },
       "<nil>": {
-        "model": 145,
+        "model": 150,
         "prov": 52,
-        "dism": 850
+        "dism": 862
       }
     }
   },
