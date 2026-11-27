@@ -92,7 +92,7 @@ def ev_counts(d_from, d_to, extra=()):
 
 def by_prop(prop, event, d_from, d_to):
     m = breakdown(f"prop:{prop}", [f"event:is:{event}"], d_from, d_to)
-    return sorted(((k, v.get("events", 0)) for k, v in m.items() if k not in ("", "None")), key=lambda x: -x[1])
+    return sorted(((k, v.get("events", 0)) for k, v in m.items() if k.strip() not in ("", "None", "null", "(none)")), key=lambda x: -x[1])
 
 
 def period_block(d_from, d_to, prev_from, prev_to):
@@ -240,7 +240,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter')__ck();});})(
 </script>""" % json.dumps(PASSWORD)
 
 
-def write_html(yest, week, mem):
+def write_html(today_blk, yest, week, mem):
     days = sorted(d for d, v in mem["days"].items() if any(v.values()))
     h = {k: [mem["days"][d].get(k, 0) for d in days] for k in EV}
     labels = [d[5:] for d in days]
@@ -259,6 +259,8 @@ body{{background:#f1efe8;color:#0b0b0b;padding:20px 24px;max-width:1100px;margin
 h1{{font-size:16px;font-weight:600;}} .meta{{font-size:12px;color:#898781;}}
 .sec{{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#52514e;margin:26px 0 12px;padding-bottom:7px;border-bottom:1.5px solid #d5d4cd;}}
 .g2{{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:10px;}}
+.g3{{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:10px;}}
+@media(max-width:900px){{.g3{{grid-template-columns:1fr;}}}}
 .card{{background:#fff;border-radius:10px;border:.5px solid rgba(11,11,11,.08);padding:14px 16px;margin-bottom:10px;}}
 .lbl{{font-size:11px;color:#898781;margin-bottom:3px;}} .num-sm{{font-size:17px;font-weight:600;}}
 .delta{{font-size:11px;font-weight:500;margin-top:2px;}} .sub{{font-size:11px;color:#898781;margin-top:2px;}}
@@ -271,8 +273,8 @@ h1{{font-size:16px;font-weight:600;}} .meta{{font-size:12px;color:#898781;}}
 <div class="hdr"><h1>similarcams.com · RecoDrawer <span style="font-weight:400;color:#898781;">(Supermetry)</span></h1>
 <span class="meta">обновлено: {updated} · <a href="index.html" style="color:#2a78d6;">основной дашборд</a></span></div>
 
-<div class="sec">Вчера ({yest["from"]}) и 7 дней ({week["from"]} – {week["to"]})</div>
-<div class="g2">{reco_card("вчера", yest)}{reco_card("7 дней", week)}</div>
+<div class="sec">Сегодня ({today_blk["from"]}, неполный день) · вчера ({yest["from"]}) · 7 дней ({week["from"]} – {week["to"]})</div>
+<div class="g3">{reco_card("сегодня", today_blk)}{reco_card("вчера", yest)}{reco_card("7 дней", week)}</div>
 
 <div class="g2">
   <div class="card"><div class="cl">RecoDrawer — воронка вчера (события)</div>
@@ -343,11 +345,12 @@ def main():
     yd = today - timedelta(days=1)
     print(f"Yesterday {yd}, 7 days {today - timedelta(days=7)}..{yd}")
 
+    today_blk = period_block(today, today, yd, yd)
     yest = period_block(yd, yd, yd - timedelta(days=1), yd - timedelta(days=1))
     w_from = today - timedelta(days=7)
     week = period_block(w_from, yd, w_from - timedelta(days=7), w_from - timedelta(days=1))
 
-    if not yest["all"]["shown"] and not week["all"]["shown"]:
+    if not (today_blk["all"]["shown"] or yest["all"]["shown"] or week["all"]["shown"]):
         sys.exit("No reco_drawer_shown events returned — check key, site id and event names.")
 
     mem = load_memory()
@@ -356,9 +359,9 @@ def main():
     os.makedirs(PUBLIC, exist_ok=True)
     with open(os.path.join(PUBLIC, "supermetry_reco.json"), "w", encoding="utf-8") as f:
         json.dump({"updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                   "yesterday": yest, "week": week}, f, indent=2, ensure_ascii=False)
-    write_html(yest, week, mem)
-    print(f"✓ public/reco.html  shown yesterday={yest['all']['shown']}, 7d={week['all']['shown']}")
+                   "today": today_blk, "yesterday": yest, "week": week}, f, indent=2, ensure_ascii=False)
+    write_html(today_blk, yest, week, mem)
+    print(f"✓ public/reco.html  shown today={today_blk['all']['shown']}, yesterday={yest['all']['shown']}, 7d={week['all']['shown']}")
 
 
 if __name__ == "__main__":
