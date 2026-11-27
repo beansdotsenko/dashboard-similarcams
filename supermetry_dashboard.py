@@ -281,7 +281,7 @@ def main():
         elif pm["suffix"] in ("stats-and-schedule", "stats"):
             m["stats_vis"] += v
     top_models = sorted((m for m in models.values() if m["vis"] > 0),
-                        key=lambda m: -(m["vis"] + m["profile_vis"] + m["stats_vis"]))[:30]
+                        key=lambda m: -(m["vis"] + m["profile_vis"] + m["stats_vis"]))[:50]
     top_shorts = sorted(shorts.values(), key=lambda m: -m["vis"])[:20]
 
     prev_rank = next((mem["model_rankings"][d] for d in sorted(mem["model_rankings"], reverse=True) if d != y_iso), [])
@@ -466,7 +466,7 @@ def main():
                         f'<td class="tdr" style="font-weight:600;">{m["vis"]:,}{dstr}</td>'
                         f'<td class="tdr">{m["profile_vis"] or dash}</td><td class="tdr">{m["stats_vis"] or dash}</td>'
                         f'<td style="padding:5px 0 5px 12px;">{model_spark(m)}</td></tr>')
-    dropped_html = ("" if not dropped else '<div style="margin-top:12px;font-size:11px;">⬇ Выпали из топ 30: ' +
+    dropped_html = ("" if not dropped else '<div style="margin-top:12px;font-size:11px;">⬇ Выпали из топ 50: ' +
                     " · ".join(f'<span style="color:#e24b4a;">{m["model"]}</span> <span style="color:#898781;font-size:10px;">({m["platform"]})</span>' for m in dropped[:5]) + "</div>")
 
     shorts_html = "".join(f'<tr style="border-bottom:.5px solid #eeeee8;"><td class="tdn">{i}</td><td style="padding:5px 8px 5px 0;font-size:11px;">{m["model"]}</td>'
@@ -576,7 +576,7 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
 <div class="sec">Топ 20 страниц — {yl} · динамика к позавчера</div>
 <div class="card" style="overflow-x:auto;"><table style="min-width:620px;"><thead><tr><th>#</th><th style="text-align:left;">Страница</th><th>Посет.</th><th>Доля</th><th>Стр/визит</th><th style="text-align:left;">Сигнал</th></tr></thead><tbody>{rows_html}</tbody></table></div>
 
-<div class="sec">Топ 30 моделей — {yl}</div>
+<div class="sec">Топ 50 моделей — {yl}</div>
 <div class="card" style="overflow-x:auto;"><table style="min-width:520px;"><thead><tr><th>#</th><th style="text-align:left;">Модель</th><th style="text-align:left;">Платформа</th><th>stream</th><th>profile</th><th>stats</th><th style="text-align:left;">30 дней</th></tr></thead><tbody>{models_html}</tbody></table>{dropped_html}</div>
 
 <div class="sec">Топ shorts — {yl}</div>
