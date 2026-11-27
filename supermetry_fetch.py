@@ -22,9 +22,11 @@ import urllib.request
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-BASE = os.environ["SUPERMETRY_URL"].rstrip("/") + "/api/public/v1"
-KEY = os.environ["SUPERMETRY_KEY"]
-SITE = os.environ["SUPERMETRY_SITE_ID"]
+BASE = os.environ["SUPERMETRY_URL"].strip().rstrip("/") + "/api/public/v1"
+KEY = os.environ["SUPERMETRY_KEY"].strip()
+SITE = os.environ.get("SUPERMETRY_SITE_ID", "").strip()
+if not SITE.isdigit():
+    sys.exit(f"SUPERMETRY_SITE_ID must be a number like 1, got {SITE!r} (length {len(SITE)})")
 PASSWORD = os.environ.get("DASHBOARD_PASSWORD", "")
 TZ = ZoneInfo("Europe/Moscow")  # site timezone in Supermetry
 
