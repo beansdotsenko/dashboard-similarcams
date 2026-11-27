@@ -70,7 +70,7 @@ def main():
             k = (pm["platform"], pm["model"])
             models.setdefault(k, {"platform": pm["platform"], "gender": pm["gender"], "model": pm["model"], "vis": 0})
             models[k]["vis"] += int(num(r.get("visitors")))
-    top_models = sorted(models.values(), key=lambda m: -m["vis"])[:20]
+    top_models = sorted(models.values(), key=lambda m: -m["vis"])[:30]
     top_pages = sorted((r for r in pages if not r["page"].startswith(EXCLUDE_PAGES)), key=lambda r: -num(r.get("visitors")))[:20]
 
     # ── html ──
@@ -171,7 +171,7 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
 
 <div class="sec">Топ 20 страниц — сегодня</div>
 <div class="card" style="overflow-x:auto;"><table style="min-width:520px;"><thead><tr><th>#</th><th style="text-align:left;">Страница</th><th>Посет.</th><th>Доля</th><th>Стр/визит</th></tr></thead><tbody>{pages_html}</tbody></table></div>
-<div class="sec">Топ 20 моделей — сегодня</div>
+<div class="sec">Топ 30 моделей — сегодня</div>
 <div class="card" style="overflow-x:auto;"><table><thead><tr><th>#</th><th style="text-align:left;">Модель</th><th style="text-align:left;">Платформа</th><th>Посет.</th></tr></thead><tbody>{models_html}</tbody></table></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
