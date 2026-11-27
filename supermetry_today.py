@@ -10,8 +10,8 @@ import json
 import os
 from datetime import datetime, timedelta
 
-from supermetry_dashboard import (CLICK_EVENT, EXCLUDE_PAGES, PUBLIC, TZ, bars, breakdown, delta_ui, flag,
-                                  gate_script, num, parse_model_url, summary, timeseries)
+from supermetry_dashboard import (CLICK_EVENT, EXCLUDE_PAGES, PT_CSS, PT_JS, PUBLIC, TZ, bars, breakdown, delta_ui, flag,
+                                  gate_script, num, pages_table, parse_model_url, summary, timeseries)
 
 
 def hourly(day, metrics, filters=()):
@@ -60,7 +60,7 @@ def main():
     countries = [(r["country"], int(num(r["visitors"]))) for r in breakdown("country", today, today, "visitors", limit=10)]
     channels = [(r["channel"], int(num(r["visitors"]))) for r in breakdown("channel", today, today, "visitors", limit=6)]
     devices = [(r["device"], int(num(r["visitors"]))) for r in breakdown("device", today, today, "visitors", limit=5)]
-    pages = breakdown("page", today, today, "visitors,visits,pageviews", limit=1000)
+    pages = breakdown("page", today, today, "visitors,visits,pageviews,events", limit=1000)
 
     # models today
     models = {}
@@ -71,7 +71,6 @@ def main():
             models.setdefault(k, {"platform": pm["platform"], "gender": pm["gender"], "model": pm["model"], "vis": 0})
             models[k]["vis"] += int(num(r.get("visitors")))
     top_models = sorted(models.values(), key=lambda m: -m["vis"])[:50]
-    top_pages = sorted((r for r in pages if not r["page"].startswith(EXCLUDE_PAGES)), key=lambda r: -num(r.get("visitors")))[:20]
 
     # ── html ──
     cmp_lbl = f"вчера к {H:02d}:00" if H else "вчера"
@@ -105,12 +104,7 @@ def main():
         f'<span style="font-weight:600;">{v:,} <span style="color:#898781;font-weight:400;">({round(v / vis_t * 100) if vis_t else 0}%)</span></span></div>'
         for c, v in countries) or '<span style="font-size:11px;color:#898781;">нет данных</span>'
 
-    pages_html = "".join(
-        f'<tr style="border-bottom:.5px solid #eeeee8;"><td class="tdn">{i}</td><td style="padding:6px 8px;font-size:11px;word-break:break-all;">{r["page"]}</td>'
-        f'<td class="tdr" style="font-weight:600;">{int(num(r.get("visitors"))):,}</td>'
-        f'<td class="tdr" style="color:#898781;">{round(num(r.get("visitors")) / vis_t * 100, 1) if vis_t else 0}%</td>'
-        f'<td class="tdr" style="color:#898781;">{(num(r.get("pageviews")) / num(r.get("visits"))) if num(r.get("visits")) else 0:.1f}</td></tr>'
-        for i, r in enumerate(top_pages, 1))
+    pages_html = pages_table(pages, None, vis_t, 100, "pages_today")
     models_html = "".join(
         f'<tr style="border-bottom:.5px solid #eeeee8;"><td class="tdn">{i}</td><td style="padding:5px 8px 5px 0;font-size:11px;">{m["model"]}</td>'
         f'<td style="padding:5px 8px;font-size:10px;"><b>{m["platform"]}</b> <span style="color:#898781;">{m["gender"]}</span></td>'
@@ -142,6 +136,7 @@ body{{background:#f1efe8;color:#0b0b0b;padding:20px 24px;max-width:1100px;margin
 .dot{{width:10px;height:3px;border-radius:2px;display:inline-block;vertical-align:middle;margin-right:3px;}}
 table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10px;font-weight:700;color:#898781;text-align:right;border-bottom:1.5px solid #d5d4cd;}}
 .tdn{{padding:6px 8px 6px 0;font-size:11px;color:#898781;text-align:right;}} .tdr{{padding:5px 8px;font-size:11px;text-align:right;white-space:nowrap;}}
+{PT_CSS}
 @media(max-width:900px){{.g5{{grid-template-columns:repeat(3,1fr);}}}}
 @media(max-width:640px){{.g5{{grid-template-columns:1fr 1fr;}}.g2{{grid-template-columns:1fr;}}}}
 </style>{gate_script()}</head><body>
@@ -169,14 +164,15 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
     <div class="cl" style="margin-top:14px;">Устройства — сегодня</div><div>{bars(devices, "#888780", width=110, total=vis_t)}</div></div>
 </div>
 
-<div class="sec">Топ 20 страниц — сегодня</div>
-<div class="card" style="overflow-x:auto;"><table style="min-width:520px;"><thead><tr><th>#</th><th style="text-align:left;">Страница</th><th>Посет.</th><th>Доля</th><th>Стр/визит</th></tr></thead><tbody>{pages_html}</tbody></table></div>
+<div class="sec">Страницы — сегодня</div>
+<div class="card">{pages_html}</div>
 <div class="sec">Топ 50 моделей — сегодня</div>
 <div class="card" style="overflow-x:auto;"><table><thead><tr><th>#</th><th style="text-align:left;">Модель</th><th style="text-align:left;">Платформа</th><th>Посет.</th></tr></thead><tbody>{models_html}</tbody></table></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>const D = {json.dumps(data, ensure_ascii=False)};</script>
 <script>{CHART_JS}</script>
+<script>{PT_JS}</script>
 </body></html>"""
     os.makedirs(PUBLIC, exist_ok=True)
     with open(os.path.join(PUBLIC, "today.html"), "w", encoding="utf-8") as f:
