@@ -28,7 +28,7 @@ jobs:
           python-version: '3.11'
 
       - name: Today (today.html)
-        run: python supermetry_today.py
+        run: python sm_today.py
 
       - name: Commit & push
         run: |
