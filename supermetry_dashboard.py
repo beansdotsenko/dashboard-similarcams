@@ -268,6 +268,8 @@ def main():
     r_shown = reco.get("reco_drawer_shown", 0)
     r_model = reco.get("reco_drawer_model_clicked", 0)
     r_prov = reco.get("reco_drawer_provider_clicked", 0)
+    _rcr = breakdown("event", yd, yd, "events", ["event:is:provider_clicked", "prop:surface:is:provider_recommendation_drawer"], 5)
+    r_rcr = int(num(_rcr[0]["events"])) if _rcr else 0   # RecoClickRef
     r_dism = reco.get("reco_drawer_dismissed", 0)
 
     # audience yesterday
@@ -403,7 +405,7 @@ def main():
                           f"Дровер показан в {reco_rate}% визитов. Проверить лимиты показа (session_cap, min_gap) на <a href='reco.html'>странице дровера</a>.", "#eb6834"))
         mc = round(r_model / r_shown * 100, 1)
         hypos.append(("✓" if mc >= 5 else "→", f"RecoDrawer: клик по модели {mc}% показов",
-                      f"Показов {r_shown:,}, кликов по модели {r_model:,}, по провайдеру {r_prov:,}, закрытий {r_dism:,}.",
+                      f"Показов {r_shown:,}, кликов по модели {r_model:,}, Watch on {r_prov:,}, закрытий {r_dism:,}.",
                       "#1baf7a" if mc >= 5 else "#898781"))
     if surfaces_y and cr_y_ev:
         s0 = surfaces_y[0]
@@ -580,7 +582,8 @@ table{{width:100%;border-collapse:collapse;}} th{{padding:0 8px 7px;font-size:10
     <div class="delta" style="color:{c_ctr};">{d_ctr}</div><div class="sub">позавчера: {ctr_p}%</div>
     <div class="extra">среднее за период: <b>{ctr_30d_avg}%</b> ({len(active)} дн. данных)</div></div>
   <div class="card"><div class="lbl">RecoDrawer shown</div><div class="num-sm">{r_shown:,}</div>
-    <div class="sub">модель: {r_model:,} ({round(r_model / r_shown * 100, 1) if r_shown else 0}%) · провайдер: {r_prov:,} ({round(r_prov / r_shown * 100, 1) if r_shown else 0}%)</div>
+    <div class="sub">модель: {r_model:,} ({round(r_model / r_shown * 100, 1) if r_shown else 0}%) · Watch on: {r_prov:,} ({round(r_prov / r_shown * 100, 1) if r_shown else 0}%)</div>
+    <div class="sub">💰 RecoClickRef: <b>{r_rcr:,}</b></div>
     <div class="extra">закрыт: {r_dism:,} ({round(r_dism / r_shown * 100, 1) if r_shown else 0}%)<br><a href="reco.html">подробно: online/offline, причины, A/B →</a></div></div>
 </div>
 
