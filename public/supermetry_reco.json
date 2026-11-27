@@ -1,31 +1,31 @@
 {
-  "updated_at": "2026-11-27T12:22:39+00:00",
+  "updated_at": "2026-11-27T12:29:39+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 3060,
-      "dism": 1064,
-      "suppr": 7329,
+      "shown": 3077,
+      "dism": 1069,
+      "suppr": 7390,
       "all": 20,
       "prov": 65,
-      "model": 175
+      "model": 177
     },
     "online": {
-      "shown": 964,
-      "dism": 407,
-      "suppr": 6438,
+      "shown": 972,
+      "dism": 409,
+      "suppr": 6496,
       "all": 0,
       "prov": 24,
-      "model": 77
+      "model": 78
     },
     "offline": {
-      "shown": 2096,
-      "dism": 657,
-      "suppr": 892,
+      "shown": 2105,
+      "dism": 660,
+      "suppr": 894,
       "all": 0,
       "prov": 41,
-      "model": 98
+      "model": 99
     },
     "prev": {
       "shown": 2,
@@ -60,7 +60,7 @@
     "brands_model": [
       [
         "bongacams",
-        47
+        49
       ],
       [
         "stripchat",
@@ -82,15 +82,15 @@
     "reasons": [
       [
         "session_cap",
-        4501
+        4547
       ],
       [
         "min_gap",
-        2477
+        2485
       ],
       [
         "converted",
-        153
+        154
       ],
       [
         "quick_dismiss",
@@ -98,20 +98,20 @@
       ],
       [
         "weekly_cap",
-        82
+        86
       ]
     ],
     "ab": {
       "b": {
-        "shown": 1539
+        "shown": 1545
       },
       "a": {
-        "shown": 1522
+        "shown": 1532
       },
       "<nil>": {
-        "model": 175,
+        "model": 177,
         "prov": 65,
-        "dism": 1064
+        "dism": 1069
       }
     }
   },
