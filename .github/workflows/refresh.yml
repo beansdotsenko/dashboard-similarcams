@@ -28,13 +28,13 @@ jobs:
           python-version: '3.11'
 
       - name: Main dashboard (index.html)
-        run: python supermetry_dashboard.py
+        run: python sm_main.py
 
       - name: RecoDrawer (reco.html)
-        run: python supermetry_fetch.py
+        run: python sm_reco.py
 
       - name: Today (today.html)
-        run: python supermetry_today.py
+        run: python sm_today.py
 
       - name: Commit & push
         run: |
