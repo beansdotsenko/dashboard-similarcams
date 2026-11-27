@@ -61,7 +61,12 @@ def breakdown(dimension, filters, d_from, d_to, metrics=("events", "visits")):
         ("dimension", dimension), ("metrics", ",".join(metrics)), ("limit", "100"),
     ] + [("filter", f) for f in filters]
     url = f"{BASE}/stats/breakdown?{urllib.parse.urlencode(params)}"
-    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {KEY}", "Accept": "application/json"})
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"Bearer {KEY}",
+        "Accept": "application/json",
+        # Cloudflare blocks the default "Python-urllib" user agent (error 1010)
+        "User-Agent": "Mozilla/5.0 (compatible; similarcams-dashboard/1.0; +https://github.com)",
+    })
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
             data = json.load(r)
