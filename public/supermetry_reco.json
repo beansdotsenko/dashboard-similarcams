@@ -1,31 +1,31 @@
 {
-  "updated_at": "2026-11-27T09:17:30+00:00",
+  "updated_at": "2026-11-27T12:12:43+00:00",
   "today": {
     "from": "2026-11-27",
     "to": "2026-11-27",
     "all": {
-      "shown": 2531,
-      "dism": 862,
-      "suppr": 5714,
-      "all": 15,
-      "prov": 52,
-      "model": 150
+      "shown": 3035,
+      "dism": 1052,
+      "suppr": 7235,
+      "all": 20,
+      "prov": 64,
+      "model": 174
     },
     "online": {
-      "shown": 784,
-      "dism": 332,
-      "suppr": 5017,
+      "shown": 955,
+      "dism": 403,
+      "suppr": 6350,
       "all": 0,
-      "prov": 21,
-      "model": 64
+      "prov": 24,
+      "model": 76
     },
     "offline": {
-      "shown": 1747,
-      "dism": 530,
-      "suppr": 697,
+      "shown": 2080,
+      "dism": 649,
+      "suppr": 885,
       "all": 0,
-      "prov": 31,
-      "model": 86
+      "prov": 40,
+      "model": 98
     },
     "prev": {
       "shown": 2,
@@ -38,7 +38,7 @@
     "brands": [
       [
         "camsoda",
-        24
+        29
       ],
       [
         "streamate",
@@ -46,11 +46,11 @@
       ],
       [
         "bongacams",
-        10
+        13
       ],
       [
         "stripchat",
-        3
+        7
       ],
       [
         "livejasmin",
@@ -59,59 +59,59 @@
     ],
     "brands_model": [
       [
-        "stripchat",
-        40
+        "bongacams",
+        47
       ],
       [
-        "bongacams",
-        38
+        "stripchat",
+        44
       ],
       [
         "camsoda",
-        27
+        30
       ],
       [
         "streamate",
-        26
+        30
       ],
       [
         "chaturbate",
-        19
+        23
       ]
     ],
     "reasons": [
       [
         "session_cap",
-        3524
+        4439
       ],
       [
         "min_gap",
-        1943
+        2457
       ],
       [
         "converted",
-        131
+        153
       ],
       [
         "quick_dismiss",
-        93
+        118
       ],
       [
         "weekly_cap",
-        23
+        68
       ]
     ],
     "ab": {
       "b": {
-        "shown": 1275
+        "shown": 1525
       },
       "a": {
-        "shown": 1256
+        "shown": 1510
       },
       "<nil>": {
-        "model": 150,
-        "prov": 52,
-        "dism": 862
+        "model": 174,
+        "prov": 64,
+        "dism": 1052
       }
     }
   },
