@@ -251,7 +251,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter')__ck();});})(
 </script>""" % json.dumps(PASSWORD)
 
 
-def write_html(today_blk, yest, week, mem):
+def write_html(yest, week, mem):
     days = sorted(d for d, v in mem["days"].items() if any(v.values()))
     h = {k: [mem["days"][d].get(k, 0) for d in days] for k in list(EV) + ["rcr"]}
     labels = [d[5:] for d in days]
@@ -284,8 +284,8 @@ h1{{font-size:16px;font-weight:600;}} .meta{{font-size:12px;color:#898781;}}
 <div class="hdr"><h1>similarcams.com · RecoDrawer <span style="font-weight:400;color:#898781;">(Supermetry)</span></h1>
 <span class="meta">обновлено: {updated} · <a href="index.html" style="color:#2a78d6;">основной дашборд</a></span></div>
 
-<div class="sec">Сегодня ({today_blk["from"]}, неполный день) · вчера ({yest["from"]}) · 7 дней ({week["from"]} – {week["to"]})</div>
-<div class="g3">{reco_card("сегодня", today_blk)}{reco_card("вчера", yest)}{reco_card("7 дней", week)}</div>
+<div class="sec">Вчера ({yest["from"]}) · 7 дней ({week["from"]} – {week["to"]})</div>
+<div class="g2">{reco_card("вчера", yest)}{reco_card("7 дней", week)}</div>
 
 <div class="g2">
   <div class="card"><div class="cl">RecoDrawer — воронка вчера (события)</div>
@@ -365,12 +365,11 @@ def main():
     yd = today - timedelta(days=1)
     print(f"Today {today}, yesterday {yd}")
 
-    today_blk = period_block(today, today, yd, yd)
     yest = period_block(yd, yd, yd - timedelta(days=1), yd - timedelta(days=1))
     w_from = today - timedelta(days=7)
     week = period_block(w_from, yd, w_from - timedelta(days=7), w_from - timedelta(days=1))
 
-    if not (today_blk["all"]["shown"] or yest["all"]["shown"] or week["all"]["shown"]):
+    if not (yest["all"]["shown"] or week["all"]["shown"]):
         sys.exit("No reco_drawer_shown events returned — check key, site id and event names.")
 
     mem = load_memory()
@@ -379,9 +378,9 @@ def main():
     os.makedirs(PUBLIC, exist_ok=True)
     with open(os.path.join(PUBLIC, "supermetry_reco.json"), "w", encoding="utf-8") as f:
         json.dump({"updated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                   "today": today_blk, "yesterday": yest, "week": week}, f, indent=2, ensure_ascii=False)
-    write_html(today_blk, yest, week, mem)
-    print(f"✓ public/reco.html  shown today={today_blk['all']['shown']}, yesterday={yest['all']['shown']}, 7d={week['all']['shown']}")
+                   "yesterday": yest, "week": week}, f, indent=2, ensure_ascii=False)
+    write_html(yest, week, mem)
+    print(f"✓ public/reco.html  shown yesterday={yest['all']['shown']}, 7d={week['all']['shown']}")
 
 
 if __name__ == "__main__":
